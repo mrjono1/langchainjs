@@ -1,4 +1,4 @@
-import type { ZodV3Like, ZodV4Like } from "../utils/types/zod.js";
+import type { ZodV4Like } from "../utils/types/zod.js";
 import {
   AIMessage,
   type BaseMessage,
@@ -942,7 +942,7 @@ export abstract class BaseChatModel<
     RunOutput extends Record<string, any> = Record<string, any>,
   >(
     outputSchema:
-      | ZodV3Like<RunOutput>
+      | ZodV4Like<RunOutput>
       // oxlint-disable-next-line @typescript-eslint/no-explicit-any
       | Record<string, any>,
     config?: StructuredOutputMethodOptions<false>
@@ -953,7 +953,7 @@ export abstract class BaseChatModel<
     RunOutput extends Record<string, any> = Record<string, any>,
   >(
     outputSchema:
-      | ZodV3Like<RunOutput>
+      | ZodV4Like<RunOutput>
       // oxlint-disable-next-line @typescript-eslint/no-explicit-any
       | Record<string, any>,
     config?: StructuredOutputMethodOptions<true>

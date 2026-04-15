@@ -1,6 +1,6 @@
 import { ChatModelIntegrationTests } from "@langchain/standard-tests/vitest";
 import { AIMessageChunk } from "@langchain/core/messages";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 
 import { ChatOpenRouter } from "../index.js";

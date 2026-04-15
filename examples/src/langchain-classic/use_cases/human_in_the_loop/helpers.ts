@@ -1,6 +1,6 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { StructuredTool } from "@langchain/core/tools";
-import { z } from "zod/v3";
+import * as z from "zod";
 import {
   Runnable,
   RunnableLambda,

@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { describe, it, expect } from "vitest";
 import { tool, ToolRuntime } from "@langchain/core/tools";
 import { HumanMessage, ToolMessage } from "@langchain/core/messages";

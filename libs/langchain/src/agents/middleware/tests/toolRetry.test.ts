@@ -5,7 +5,7 @@
 import { describe, it, expect } from "vitest";
 import { HumanMessage, ToolMessage } from "@langchain/core/messages";
 import { tool } from "@langchain/core/tools";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { MemorySaver } from "@langchain/langgraph-checkpoint";
 import { performance } from "node:perf_hooks";
 
@@ -144,7 +144,7 @@ describe("toolRetryMiddleware", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(InvalidRetryConfigError);
         expect((error as InvalidRetryConfigError).message).toContain(
-          "Number must be greater than or equal to 0"
+          "Too small: expected number to be >=0"
         );
         expect((error as InvalidRetryConfigError).cause.issues[0].path).toEqual(
           ["maxRetries"]
@@ -162,7 +162,7 @@ describe("toolRetryMiddleware", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(InvalidRetryConfigError);
         expect((error as InvalidRetryConfigError).message).toContain(
-          "Number must be greater than or equal to 0"
+          "Too small: expected number to be >=0"
         );
         expect((error as InvalidRetryConfigError).cause.issues[0].path).toEqual(
           ["initialDelayMs"]
@@ -180,7 +180,7 @@ describe("toolRetryMiddleware", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(InvalidRetryConfigError);
         expect((error as InvalidRetryConfigError).message).toContain(
-          "Number must be greater than or equal to 0"
+          "Too small: expected number to be >=0"
         );
         expect((error as InvalidRetryConfigError).cause.issues[0].path).toEqual(
           ["maxDelayMs"]
@@ -198,7 +198,7 @@ describe("toolRetryMiddleware", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(InvalidRetryConfigError);
         expect((error as InvalidRetryConfigError).message).toContain(
-          "Number must be greater than or equal to 0"
+          "Too small: expected number to be >=0"
         );
         expect((error as InvalidRetryConfigError).cause.issues[0].path).toEqual(
           ["backoffFactor"]

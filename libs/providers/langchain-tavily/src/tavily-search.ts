@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { CallbackManagerForToolRun } from "@langchain/core/callbacks/manager";
 import { StructuredTool, ToolParams } from "@langchain/core/tools";
 import { InferInteropZodOutput } from "@langchain/core/utils/types";

@@ -1,7 +1,7 @@
 import { ChatTogetherAI } from "@langchain/together-ai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { tool } from "@langchain/core/tools";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 const calculatorTool = tool(
   async ({ expression }) => {

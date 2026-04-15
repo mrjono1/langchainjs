@@ -25,7 +25,6 @@
     "**/src/utils/sax-js/**",
     "**/src/util/@cfworker/**",
     "**/src/util/fast-json-patch/**",
-    "**/src/utils/zod-to-json-schema/**",
   ],
   "rules": {
     "constructor-super": "error",

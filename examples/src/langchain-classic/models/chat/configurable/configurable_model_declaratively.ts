@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { tool } from "@langchain/core/tools";
 import { initChatModel } from "@langchain/classic/chat_models/universal";
 

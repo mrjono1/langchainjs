@@ -1,6 +1,6 @@
 import { ChatOpenAI } from "@langchain/openai";
-import { z } from "zod/v3";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import * as z from "zod";
+import { toJsonSchema } from "@langchain/core/utils/json_schema";
 
 const model = new ChatOpenAI({
   temperature: 0,
@@ -28,7 +28,7 @@ const modelWithTools = model.bindTools([
     function: {
       name: "calculator",
       description: calculatorSchema.description,
-      parameters: zodToJsonSchema(calculatorSchema),
+      parameters: toJsonSchema(calculatorSchema),
     },
   },
   {
@@ -36,7 +36,7 @@ const modelWithTools = model.bindTools([
     function: {
       name: "weather",
       description: weatherSchema.description,
-      parameters: zodToJsonSchema(weatherSchema),
+      parameters: toJsonSchema(weatherSchema),
     },
   },
 ]);

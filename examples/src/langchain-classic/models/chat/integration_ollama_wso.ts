@@ -1,5 +1,5 @@
 import { ChatOllama } from "@langchain/ollama";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 // Define the model
 const model = new ChatOllama({

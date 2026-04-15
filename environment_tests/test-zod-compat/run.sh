@@ -1,30 +1,19 @@
 #!/usr/bin/env bash
 #
-# Zod compatibility tests for @langchain/core and langchain
+# Zod compatibility tests for @langchain/core and langchain (zod v4 only)
 #
 # Tests that exported types work correctly with:
-#   1. zod@3.25.x (v3-only consumer)
-#   2. zod@4.x (v4 consumer)
-#   3. zod version mismatch (consumer has zod@3.25.x, core built with zod@4.x)
+#   1. zod@4.x consumer (semver range)
+#   2. Two physical zod@4 copies (different patch versions nested under @langchain/core)
 #
-# Each test exercises both @langchain/core primitives (tool, StructuredOutputParser,
-# InteropZodType) and langchain agent APIs (createAgent, createMiddleware,
-# toolStrategy, providerStrategy).
+# Each test exercises public APIs (tool, StructuredOutputParser, createAgent, etc.)
+# and runs `tsc --noEmit` in isolation.
 #
-# Each test creates an isolated directory, installs packages from local
-# tarballs alongside a specific zod version, and runs `tsc --noEmit`.
-#
-# The "zod-mismatch" test is special: after the normal install, it forces a
-# DIFFERENT zod version into @langchain/core's and langchain's nested
-# node_modules. This means TypeScript resolves two distinct copies of zod's
-# .d.ts files and must structurally compare them at every interop boundary.
-# Before the fix, this caused OOM; after the fix, it's fast because the
-# exported types are lightweight structural interfaces with no zod imports.
+# The zod4-dup test forces a second zod version into @langchain/core/node_modules
+# so TypeScript resolves two distinct .d.ts trees for the same major.
 #
 # Usage:
 #   ./environment_tests/test-zod-compat/run.sh
-#   # or from monorepo root:
-#   bash environment_tests/test-zod-compat/run.sh
 
 set -euo pipefail
 
@@ -34,10 +23,8 @@ CORE_DIR="$MONOREPO_ROOT/libs/langchain-core"
 LANGCHAIN_DIR="$MONOREPO_ROOT/libs/langchain"
 WORK_DIR=$(mktemp -d)
 
-# The consumer installs this version at the top level
-CONSUMER_ZOD_VERSION="3.25.76"
-# Force this version nested inside @langchain/core for the mismatch test
-NESTED_ZOD_VERSION="4.3.6"
+# Force this version nested inside @langchain/core for the duplicate test
+NESTED_ZOD_VERSION="4.1.12"
 
 cleanup() {
   echo "Cleaning up $WORK_DIR"
@@ -63,7 +50,7 @@ if [ ! -f "$LANGCHAIN_TARBALL" ]; then
 fi
 echo "Langchain tarball: $LANGCHAIN_TARBALL"
 
-TESTS=("zod-v3" "zod-v4" "zod-mismatch")
+TESTS=("zod-v4" "zod4-dup")
 PASS=0
 FAIL=0
 
@@ -83,18 +70,8 @@ for test_name in "${TESTS[@]}"; do
   npm install --no-package-lock "$CORE_TARBALL" "$LANGCHAIN_TARBALL" 2>&1 | tail -3
   npm install --no-package-lock 2>&1 | tail -3
 
-  # For the mismatch test: force a DIFFERENT zod version nested inside
-  # @langchain/core and langchain so TypeScript sees two distinct copies.
-  #
-  # node_modules/
-  #   zod/            <-- 3.25.76 (consumer's copy)
-  #   @langchain/
-  #     core/
-  #       node_modules/
-  #         zod/      <-- 4.3.6 (different copy, as if core was published against v4)
-  #     langchain/    <-- uses core's nested zod transitively via .d.ts references
-  if [ "$test_name" = "zod-mismatch" ]; then
-    echo "Forcing zod version mismatch..."
+  if [ "$test_name" = "zod4-dup" ]; then
+    echo "Forcing second zod@4 copy under @langchain/core..."
     CORE_NESTED="$TEST_WORK/node_modules/@langchain/core/node_modules"
     mkdir -p "$CORE_NESTED"
     npm pack "zod@$NESTED_ZOD_VERSION" --pack-destination "$CORE_NESTED" 2>/dev/null
@@ -105,13 +82,10 @@ for test_name in "${TESTS[@]}"; do
   fi
 
   echo "Installed zod version(s):"
-  # Show the top-level (consumer) zod version
   node -e "try{const p=require.resolve('zod');const j=require(require('path').join(require('path').dirname(p),'package.json'));console.log('  top-level zod:',j.version)}catch(e){console.log('  top-level zod: not found')}"
-  # Show @langchain/core's resolved zod (may differ if nested)
   node -e "
     const path = require('path');
     try {
-      // Resolve zod from @langchain/core's perspective
       const coreDir = path.dirname(require.resolve('@langchain/core/package.json'));
       const zodPath = require.resolve('zod', { paths: [coreDir] });
       const zodPkg = require(path.join(path.dirname(zodPath), 'package.json'));

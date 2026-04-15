@@ -1,14 +1,14 @@
 {
-  "name": "test-zod-compat-v3",
+  "name": "test-zod-compat-zod4-dup",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Verify @langchain/core works with zod@3.25.x (consumer has v3, core built with v4)",
+  "description": "Verify @langchain/core does not OOM when two different zod@4 copies exist (consumer vs nested)",
   "scripts": {
     "test": "tsc --noEmit"
   },
   "dependencies": {
-    "zod": "~3.25.76",
+    "zod": "4.3.6",
     "typescript": "^5.9.3",
     "@types/node": "^22"
   }

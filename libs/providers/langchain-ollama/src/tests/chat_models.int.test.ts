@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import url from "node:url";
 import path from "node:path";
 
-import { z } from "zod/v3";
+import * as z from "zod";
 import { AIMessage, HumanMessage } from "@langchain/core/messages";
 import { PromptTemplate } from "@langchain/core/prompts";
 import {

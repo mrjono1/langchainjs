@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatAnthropic } from "@langchain/anthropic";
@@ -439,10 +438,10 @@ describe("structured output handling", () => {
     });
 
     describe("schema title extraction", () => {
-      it("should use title from Zod v4 schema with .meta({ title })", () => {
-        const zodSchema = z4
+      it("should use title from Zod schema with .meta({ title })", () => {
+        const zodSchema = z
           .object({
-            status: z4.string(),
+            status: z.string(),
           })
           .meta({ title: "my_custom_tool" });
 
@@ -466,8 +465,8 @@ describe("structured output handling", () => {
       });
 
       it("should fall back to extract-{n} when no title is provided", () => {
-        const zodSchema = z4.object({
-          status: z4.string(),
+        const zodSchema = z.object({
+          status: z.string(),
         });
 
         const [strategy] = toolStrategy(zodSchema);
@@ -475,10 +474,10 @@ describe("structured output handling", () => {
         expect(strategy.name).toMatch(/^extract-\d+$/);
       });
 
-      it("should use title from ToolStrategy.fromSchema with Zod v4 schema", () => {
-        const zodSchema = z4
+      it("should use title from ToolStrategy.fromSchema with Zod schema", () => {
+        const zodSchema = z
           .object({
-            result: z4.number(),
+            result: z.number(),
           })
           .meta({ title: "calculate_result" });
 

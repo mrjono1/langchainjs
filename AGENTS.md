@@ -132,12 +132,13 @@ export { MyClass, myFunction };
 
 ### Zod Schema Support
 
-The codebase supports both Zod v3 and v4:
+Packages require **Zod v4** (`zod` peer `^4.3.6`). Use the v4 API:
 
 ```typescript
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 ```
+
+For JSON Schema from Zod schemas, use `toJsonSchema` from `@langchain/core/utils/json_schema` (not `zod-to-json-schema`).
 
 ## File Naming Conventions
 

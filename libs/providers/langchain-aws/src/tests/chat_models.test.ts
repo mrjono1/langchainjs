@@ -14,7 +14,7 @@ import {
   type SystemContentBlock as BedrockSystemContentBlock,
   ServiceTierType,
 } from "@aws-sdk/client-bedrock-runtime";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { describe, expect, test, it, vi } from "vitest";
 import { convertToConverseMessages } from "../utils/message_inputs.js";
 import { handleConverseStreamContentBlockDelta } from "../utils/message_outputs.js";

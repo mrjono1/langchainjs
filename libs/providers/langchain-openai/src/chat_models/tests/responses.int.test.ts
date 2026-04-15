@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { z } from "zod/v3";
+import * as z from "zod";
 import { describe, it, test, expect } from "vitest";
 
 import {
@@ -1307,7 +1307,7 @@ describe("tool search", () => {
     );
     expect(matchingTool).toBeDefined();
 
-    const toolResult = await matchingTool!.invoke(toolCall);
+    const toolResult = await getWeather.invoke(toolCall);
     messages.push(aiResponse, toolResult);
 
     response = await modelWithTools.invoke(messages);
@@ -1359,9 +1359,10 @@ describe("tool search", () => {
     const toolSearchCall = serverToolCalls.find(
       (b) => b.name === "tool_search"
     );
-    const toolSearchResult = serverToolResults.find(
-      (b) => b.extras?.name === "tool_search"
-    );
+    const toolSearchResult = serverToolResults.find((b) => {
+      const extras = b.extras as { name?: string } | undefined;
+      return extras?.name === "tool_search";
+    });
 
     expect(toolSearchCall).toBeDefined();
     expect(toolSearchResult).toBeDefined();

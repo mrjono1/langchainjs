@@ -1,6 +1,5 @@
 import { describe, it, expectTypeOf } from "vitest";
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 // Test with direct "zod" import (how users typically import it)
 import { z as zodMain } from "zod";
 import { tool } from "@langchain/core/tools";
@@ -11,7 +10,7 @@ import type { Runtime, WithMaybeContext } from "../runtime.js";
 import type { InferAgentContext } from "../types.js";
 
 describe("WithMaybeContext", () => {
-  it("should work with string prompt (zod/v3)", async () => {
+  it("should work with string prompt (zod/v4)", async () => {
     const contextSchema = z.object({
       foobar: z.object({
         baz: z.string(),
@@ -27,11 +26,11 @@ describe("WithMaybeContext", () => {
   });
 
   it("should work with nested objects and records (zod/v4)", async () => {
-    const contextSchema = z4.object({
-      citationTracking: z4.object({
-        citationIdToDocumentId: z4.record(z4.number(), z4.string()),
-        documentIdToCitationId: z4.record(z4.string(), z4.number().optional()),
-        nextCitationId: z4.number(),
+    const contextSchema = z.object({
+      citationTracking: z.object({
+        citationIdToDocumentId: z.record(z.number(), z.string()),
+        documentIdToCitationId: z.record(z.string(), z.number().optional()),
+        nextCitationId: z.number(),
       }),
     });
 
@@ -101,6 +100,7 @@ describe("WithMaybeContext", () => {
         customRequiredContextProp: z.string(),
       })
       .default({
+        customDefaultContextProp: "default value",
         customRequiredContextProp: "default value",
       });
 

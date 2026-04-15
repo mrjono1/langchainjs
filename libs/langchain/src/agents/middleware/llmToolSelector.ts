@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { BaseLanguageModel } from "@langchain/core/language_models/base";
 import type { InferInteropZodInput } from "@langchain/core/utils/types";
 import { HumanMessage } from "@langchain/core/messages";

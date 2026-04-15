@@ -9,7 +9,7 @@ import {
   vi,
 } from "vitest";
 import * as fs from "node:fs";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { ApiClient } from "../../clients/index.js";
 import { GoogleRequestRecorder } from "../../utils/handler.js";
 import { RequestError } from "../../utils/errors.js";

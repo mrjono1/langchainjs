@@ -32,7 +32,7 @@ test("CombiningOutputParser", async () => {
 
     Here is the JSON Schema instance your output must adhere to. Include the enclosing markdown codeblock:
     \`\`\`json
-    {"type":"object","properties":{"url":{"type":"string","description":"A link to the resource"}},"required":["url"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"}
+    {"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"url":{"type":"string","description":"A link to the resource"}},"required":["url"],"additionalProperties":false}
     \`\`\`
     -----
 

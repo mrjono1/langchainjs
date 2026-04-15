@@ -1,6 +1,6 @@
 import { ChatAnthropic } from "@langchain/anthropic";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 const calculatorSchema = z
   .object({

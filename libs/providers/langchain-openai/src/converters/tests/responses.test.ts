@@ -1984,7 +1984,7 @@ describe("tool_search support", () => {
 
       const message = convertResponsesMessageToAIMessage(response);
       expect(message.tool_calls).toHaveLength(1);
-      expect(message.tool_calls[0].name).toBe("get_weather");
+      expect(message.tool_calls![0].name).toBe("get_weather");
       expect(message.additional_kwargs.tool_outputs).toHaveLength(2);
       expect((message.additional_kwargs.tool_outputs as any[])[0].type).toBe(
         "tool_search_call"
@@ -2157,8 +2157,8 @@ describe("convertResponsesDeltaToChatGenerationChunk - json_schema with tool cal
     // No parsed content since the model only returned a tool call
     expect(message.additional_kwargs.parsed).toBeUndefined();
     // Usage metadata should still be populated
-    expect(result!.message.usage_metadata).toBeDefined();
-    expect(result!.message.usage_metadata!.input_tokens).toBe(50);
+    expect(message.usage_metadata).toBeDefined();
+    expect(message.usage_metadata!.input_tokens).toBe(50);
   });
 
   it("should parse text correctly when response.completed has json_schema format with actual text", () => {

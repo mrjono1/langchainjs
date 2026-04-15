@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { stringify } from "yaml";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { RunnableSequence } from "@langchain/core/runnables";
 import { OpenAI, ChatOpenAI, AzureChatOpenAI } from "@langchain/openai";
 import {

@@ -23,7 +23,7 @@ import { concat } from "@langchain/core/utils/stream";
 import { AnthropicVertex } from "@anthropic-ai/vertex-sdk";
 import { BaseLanguageModelInput } from "@langchain/core/language_models/base";
 import { tool } from "@langchain/core/tools";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { ChatAnthropic } from "../chat_models.js";
 import {
   AnthropicContextManagementConfigParam,

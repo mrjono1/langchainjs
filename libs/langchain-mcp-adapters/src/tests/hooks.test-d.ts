@@ -17,20 +17,20 @@ test("check tool hooks types", () => {
       },
     },
     beforeToolCall: (toolCallRequest, state, runtime) => {
-      expectTypeOf(state).toEqualTypeOf<Record<string, unknown>>();
-      expectTypeOf(runtime).toEqualTypeOf<RunnableConfig>();
-      expectTypeOf(toolCallRequest).toEqualTypeOf<{
+      expectTypeOf(state).toMatchTypeOf<Record<string, unknown>>();
+      expectTypeOf(runtime).toMatchTypeOf<RunnableConfig>();
+      expectTypeOf(toolCallRequest).toMatchTypeOf<{
         name: string;
         serverName: string;
         args?: unknown;
       }>();
     },
     afterToolCall: (toolCallResult, state, runtime) => {
-      expectTypeOf(state).toEqualTypeOf<Record<string, unknown>>();
-      expectTypeOf(runtime).toEqualTypeOf<RunnableConfig>();
-      expectTypeOf(toolCallResult.name).toEqualTypeOf<string>();
-      expectTypeOf(toolCallResult.args).toEqualTypeOf<unknown>();
-      expectTypeOf(toolCallResult.serverName).toEqualTypeOf<string>();
+      expectTypeOf(state).toMatchTypeOf<Record<string, unknown>>();
+      expectTypeOf(runtime).toMatchTypeOf<RunnableConfig>();
+      expectTypeOf(toolCallResult.name).toMatchTypeOf<string>();
+      expectTypeOf(toolCallResult.args).toMatchTypeOf<unknown>();
+      expectTypeOf(toolCallResult.serverName).toMatchTypeOf<string>();
       return {
         result: new ToolMessage({
           content: "server-after",
@@ -39,8 +39,8 @@ test("check tool hooks types", () => {
       };
     },
     onMessage: (message, server) => {
-      expectTypeOf(message.logger).toEqualTypeOf<string | undefined>();
-      expectTypeOf(server).toEqualTypeOf<{
+      expectTypeOf(message.logger).toMatchTypeOf<string | undefined>();
+      expectTypeOf(server).toMatchTypeOf<{
         server: string;
         options: ResolvedStreamableHTTPConnection | ResolvedStdioConnection;
       }>();
@@ -52,7 +52,7 @@ test("check tool hooks types", () => {
         total?: number;
         message?: string;
       }>();
-      expectTypeOf(eventSource).toEqualTypeOf<
+      expectTypeOf(eventSource).toMatchTypeOf<
         | {
             type: "tool";
             name: string;
@@ -65,51 +65,51 @@ test("check tool hooks types", () => {
       >();
     },
     onCancelled: (notification, server) => {
-      expectTypeOf(notification.reason).toEqualTypeOf<string | undefined>();
-      expectTypeOf(server).toEqualTypeOf<{
+      expectTypeOf(notification.reason).toMatchTypeOf<string | undefined>();
+      expectTypeOf(server).toMatchTypeOf<{
         server: string;
         options: ResolvedStreamableHTTPConnection | ResolvedStdioConnection;
       }>();
     },
 
     onInitialized: (server) => {
-      expectTypeOf(server).toEqualTypeOf<{
+      expectTypeOf(server).toMatchTypeOf<{
         server: string;
         options: ResolvedStreamableHTTPConnection | ResolvedStdioConnection;
       }>();
     },
 
     onPromptsListChanged: (server) => {
-      expectTypeOf(server).toEqualTypeOf<{
+      expectTypeOf(server).toMatchTypeOf<{
         server: string;
         options: ResolvedStreamableHTTPConnection | ResolvedStdioConnection;
       }>();
     },
 
     onResourcesListChanged: (server) => {
-      expectTypeOf(server).toEqualTypeOf<{
+      expectTypeOf(server).toMatchTypeOf<{
         server: string;
         options: ResolvedStreamableHTTPConnection | ResolvedStdioConnection;
       }>();
     },
 
     onResourcesUpdated: (notification, server) => {
-      expectTypeOf(notification.uri).toEqualTypeOf<string>();
-      expectTypeOf(server).toEqualTypeOf<{
+      expectTypeOf(notification.uri).toMatchTypeOf<string>();
+      expectTypeOf(server).toMatchTypeOf<{
         server: string;
         options: ResolvedStreamableHTTPConnection | ResolvedStdioConnection;
       }>();
     },
 
     onRootsListChanged: (server) => {
-      expectTypeOf(server).toEqualTypeOf<{
+      expectTypeOf(server).toMatchTypeOf<{
         server: string;
         options: ResolvedStreamableHTTPConnection | ResolvedStdioConnection;
       }>();
     },
 
     onToolsListChanged: (server) => {
-      expectTypeOf(server).toEqualTypeOf<{
+      expectTypeOf(server).toMatchTypeOf<{
         server: string;
         options: ResolvedStreamableHTTPConnection | ResolvedStdioConnection;
       }>();

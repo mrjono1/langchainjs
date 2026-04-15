@@ -1,5 +1,5 @@
-import { z } from "zod/v3";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import * as z from "zod";
+import { toJsonSchema } from "@langchain/core/utils/json_schema";
 
 import { ChatOpenAI } from "@langchain/openai";
 import {
@@ -40,7 +40,7 @@ const functionCallingModel = llm
     {
       name: "output_formatter",
       description: "Should always be used to properly format output",
-      parameters: zodToJsonSchema(zodSchema),
+      parameters: toJsonSchema(zodSchema),
     },
   ])
   .withConfig({

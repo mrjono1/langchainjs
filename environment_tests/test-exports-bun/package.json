@@ -23,7 +23,7 @@
     "d3-dsv": "2",
     "hnswlib-node": "^3.0.0",
     "langchain": "workspace:*",
-    "zod": "^3.25.76 || ^4"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",

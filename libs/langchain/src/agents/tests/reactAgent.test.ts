@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 
 import {
   BaseMessage,
@@ -949,11 +948,11 @@ describe("createAgent", () => {
     // Create middleware with Zod v4 schemas
     const middleware2 = createMiddleware({
       name: "middleware2",
-      stateSchema: z4.object({
-        middleware2Value: z4.string().default("v4-default"),
+      stateSchema: z.object({
+        middleware2Value: z.string().default("v4-default"),
       }),
-      contextSchema: z4.object({
-        middleware2Context: z4.boolean(),
+      contextSchema: z.object({
+        middleware2Context: z.boolean(),
       }),
       beforeModel: (_state, { context }) => {
         expect(context.middleware2Context).toBe(true);
@@ -1010,9 +1009,9 @@ describe("createAgent", () => {
       model,
       tools: [testTool],
       // Use Zod v4 for agent stateSchema
-      stateSchema: z4.object({
-        agentCounter: z4.number().default(0),
-        agentName: z4.string().optional(),
+      stateSchema: z.object({
+        agentCounter: z.number().default(0),
+        agentName: z.string().optional(),
       }),
       responseFormat,
       middleware: [middleware1, middleware2],
@@ -1058,10 +1057,10 @@ describe("createAgent", () => {
     const middleware = createMiddleware({
       name: "stateSchemaMiddleware",
       stateSchema: new StateSchema({
-        middlewareValue: z4.string().default("default"),
+        middlewareValue: z.string().default("default"),
       }),
-      contextSchema: z4.object({
-        middlewareContext: z4.number(),
+      contextSchema: z.object({
+        middlewareContext: z.number(),
       }),
       beforeModel: (_state, { context }) => {
         expect(context.middlewareContext).toBe(42);

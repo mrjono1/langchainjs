@@ -5,7 +5,7 @@ import {
 import { ChatVertexAI } from "@langchain/google-vertexai";
 import { HumanMessage } from "@langchain/core/messages";
 import fs from "fs";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 function fileToBase64(filePath: string): string {
   return fs.readFileSync(filePath, "base64");

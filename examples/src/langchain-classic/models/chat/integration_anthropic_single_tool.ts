@@ -1,7 +1,7 @@
 import { ChatAnthropic } from "@langchain/anthropic";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { z } from "zod/v3";
-import { zodToJsonSchema } from "zod-to-json-schema";
+import * as z from "zod";
+import { toJsonSchema } from "@langchain/core/utils/json_schema";
 
 const calculatorSchema = z.object({
   operation: z
@@ -14,7 +14,7 @@ const calculatorSchema = z.object({
 const tool = {
   name: "calculator",
   description: "A simple calculator tool",
-  input_schema: zodToJsonSchema(calculatorSchema),
+  input_schema: toJsonSchema(calculatorSchema),
 };
 
 const model = new ChatAnthropic({

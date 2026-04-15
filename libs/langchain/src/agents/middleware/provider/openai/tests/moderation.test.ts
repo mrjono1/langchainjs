@@ -949,7 +949,7 @@ describe("openAIModerationMiddleware", () => {
 
       const toolMock = vi.fn().mockResolvedValue("Inappropriate tool result");
       const { tool } = await import("@langchain/core/tools");
-      const { z } = await import("zod/v3");
+      const { z } = await import("zod/v4");
 
       const testTool = tool(toolMock, {
         name: "test_tool",
@@ -1040,7 +1040,7 @@ describe("openAIModerationMiddleware", () => {
 
       const toolMock = vi.fn().mockResolvedValue("Self-harm related content");
       const { tool } = await import("@langchain/core/tools");
-      const { z } = await import("zod/v3");
+      const { z } = await import("zod/v4");
 
       const testTool = tool(toolMock, {
         name: "test_tool",

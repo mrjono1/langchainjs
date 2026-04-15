@@ -1,6 +1,6 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { tool } from "@langchain/core/tools";
 import {
   HumanMessage,
@@ -564,7 +564,7 @@ describe("toolCallLimitMiddleware", () => {
           exitBehavior: "invalid" as any,
         })
       ).toThrow(
-        "Invalid enum value. Expected 'continue' | 'error' | 'end', received 'invalid'"
+        'Invalid option: expected one of "continue"|"error"|"end"'
       );
     });
 

@@ -1,6 +1,6 @@
 import { tool } from "@langchain/core/tools";
 import { ChatOllama } from "@langchain/ollama";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 const weatherTool = tool((_) => "Da weather is weatherin", {
   name: "get_current_weather",

@@ -1,7 +1,7 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
 
 import { expect, test } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { toJsonSchema } from "@langchain/core/utils/json_schema";
 import { Operation, applyPatch } from "@langchain/core/utils/json_patch";
 import { ChatOpenAI } from "@langchain/openai";

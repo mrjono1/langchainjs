@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 import { ChatOpenAI } from "@langchain/openai";
 import { createExtractionChainFromZod } from "../extraction.js";

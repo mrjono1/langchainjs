@@ -777,7 +777,7 @@ export async function initChatModel<
  * @example Bind tools to a configurable model:
  * ```typescript
  * import { initChatModel } from "langchain/chat_models/universal";
- * import { z } from "zod/v3";
+ * import * as z from "zod";
  * import { tool } from "@langchain/core/tools";
  *
  * const getWeatherTool = tool(

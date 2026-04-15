@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { describe, it, expectTypeOf } from "vitest";
 
 import { tool, DynamicStructuredTool, DynamicTool } from "../index.js";

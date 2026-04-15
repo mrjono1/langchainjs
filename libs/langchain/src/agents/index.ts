@@ -178,11 +178,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    StructuredResponseFormat,
-    TStateSchema,
-    ContextSchema,
-    InteropZodType<StructuredResponseFormat>
+  params: Omit<
+    CreateAgentParams<
+      StructuredResponseFormat,
+      TStateSchema,
+      ContextSchema,
+      InteropZodType<StructuredResponseFormat>
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: InteropZodType<StructuredResponseFormat>;
     middleware?: TMiddleware;
@@ -211,13 +214,16 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    ExtractZodArrayTypes<StructuredResponseFormat> extends Record<string, any>
-      ? ExtractZodArrayTypes<StructuredResponseFormat>
-      : Record<string, any>,
-    TStateSchema,
-    ContextSchema,
-    StructuredResponseFormat
+  params: Omit<
+    CreateAgentParams<
+      ExtractZodArrayTypes<StructuredResponseFormat> extends Record<string, any>
+        ? ExtractZodArrayTypes<StructuredResponseFormat>
+        : Record<string, any>,
+      TStateSchema,
+      ContextSchema,
+      StructuredResponseFormat
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: StructuredResponseFormat;
     middleware?: TMiddleware;
@@ -247,11 +253,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    Record<string, unknown>,
-    TStateSchema,
-    ContextSchema,
-    JsonSchemaFormat
+  params: Omit<
+    CreateAgentParams<
+      Record<string, unknown>,
+      TStateSchema,
+      ContextSchema,
+      JsonSchemaFormat
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: JsonSchemaFormat;
     middleware?: TMiddleware;
@@ -279,11 +288,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    Record<string, unknown>,
-    TStateSchema,
-    ContextSchema,
-    JsonSchemaFormat[]
+  params: Omit<
+    CreateAgentParams<
+      Record<string, unknown>,
+      TStateSchema,
+      ContextSchema,
+      JsonSchemaFormat[]
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: JsonSchemaFormat[];
     middleware?: TMiddleware;
@@ -311,11 +323,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    Record<string, unknown>,
-    TStateSchema,
-    ContextSchema,
-    JsonSchemaFormat | JsonSchemaFormat[]
+  params: Omit<
+    CreateAgentParams<
+      Record<string, unknown>,
+      TStateSchema,
+      ContextSchema,
+      JsonSchemaFormat | JsonSchemaFormat[]
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: JsonSchemaFormat | JsonSchemaFormat[];
     middleware?: TMiddleware;
@@ -343,11 +358,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    Record<string, unknown>,
-    TStateSchema,
-    ContextSchema,
-    SerializableSchema
+  params: Omit<
+    CreateAgentParams<
+      Record<string, unknown>,
+      TStateSchema,
+      ContextSchema,
+      SerializableSchema
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: SerializableSchema;
     middleware?: TMiddleware;
@@ -375,11 +393,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    Record<string, unknown>,
-    TStateSchema,
-    ContextSchema,
-    SerializableSchema[]
+  params: Omit<
+    CreateAgentParams<
+      Record<string, unknown>,
+      TStateSchema,
+      ContextSchema,
+      SerializableSchema[]
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: SerializableSchema[];
     middleware?: TMiddleware;
@@ -408,11 +429,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    StructuredResponseFormat,
-    TStateSchema,
-    ContextSchema,
-    TypedToolStrategy<StructuredResponseFormat>
+  params: Omit<
+    CreateAgentParams<
+      StructuredResponseFormat,
+      TStateSchema,
+      ContextSchema,
+      TypedToolStrategy<StructuredResponseFormat>
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: TypedToolStrategy<StructuredResponseFormat>;
     middleware?: TMiddleware;
@@ -441,11 +465,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    StructuredResponseFormat,
-    TStateSchema,
-    ContextSchema,
-    ToolStrategy<StructuredResponseFormat>
+  params: Omit<
+    CreateAgentParams<
+      StructuredResponseFormat,
+      TStateSchema,
+      ContextSchema,
+      ToolStrategy<StructuredResponseFormat>
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: ToolStrategy<StructuredResponseFormat>;
     middleware?: TMiddleware;
@@ -474,11 +501,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    StructuredResponseFormat,
-    TStateSchema,
-    ContextSchema,
-    ProviderStrategy<StructuredResponseFormat>
+  params: Omit<
+    CreateAgentParams<
+      StructuredResponseFormat,
+      TStateSchema,
+      ContextSchema,
+      ProviderStrategy<StructuredResponseFormat>
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: ProviderStrategy<StructuredResponseFormat>;
     middleware?: TMiddleware;
@@ -513,7 +543,7 @@ export function createAgent<
       ContextSchema,
       never
     >,
-    "responseFormat"
+    "responseFormat" | "middleware" | "tools"
   > & { middleware?: TMiddleware; tools?: TTools }
 ): ReactAgent<
   AgentTypeConfig<
@@ -544,7 +574,7 @@ export function createAgent<
       ContextSchema,
       never
     >,
-    "responseFormat"
+    "responseFormat" | "middleware" | "tools"
   > & {
     responseFormat?: undefined;
     middleware?: TMiddleware;
@@ -573,11 +603,14 @@ export function createAgent<
     | ServerTool
   )[],
 >(
-  params: CreateAgentParams<
-    StructuredResponseFormat,
-    TStateSchema,
-    ContextSchema,
-    ResponseFormat
+  params: Omit<
+    CreateAgentParams<
+      StructuredResponseFormat,
+      TStateSchema,
+      ContextSchema,
+      ResponseFormat
+    >,
+    "middleware" | "tools"
   > & {
     responseFormat: ResponseFormat;
     middleware?: TMiddleware;
@@ -596,10 +629,12 @@ export function createAgent<
 // Implementation
 export function createAgent<
   StructuredResponseFormat extends Record<string, any>,
-  TStateSchema extends StateDefinitionInit,
-  ContextSchema extends AnyAnnotationRoot | InteropZodObject,
-  TMiddleware extends readonly AgentMiddleware[] = readonly AgentMiddleware[],
-  TTools extends readonly (ClientTool | ServerTool)[] = readonly (
+  TStateSchema extends StateDefinitionInit | undefined = undefined,
+  ContextSchema extends AnyAnnotationRoot | InteropZodObject =
+    AnyAnnotationRoot,
+  const TMiddleware extends readonly AgentMiddleware[] =
+    readonly AgentMiddleware[],
+  const TTools extends readonly (ClientTool | ServerTool)[] = readonly (
     | ClientTool
     | ServerTool
   )[],

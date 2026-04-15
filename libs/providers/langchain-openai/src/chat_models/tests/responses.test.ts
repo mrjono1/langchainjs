@@ -89,7 +89,7 @@ describe("tool search support", () => {
       ],
     });
 
-    const tools = params.tools as Array<Record<string, unknown>>;
+    const tools = params.tools as unknown as Array<Record<string, unknown>>;
     expect(tools).toHaveLength(2);
     expect(tools[0]).toEqual({ type: "tool_search" });
     expect(tools[1]).toHaveProperty("type", "function");
@@ -111,7 +111,7 @@ describe("tool search support", () => {
       ],
     });
 
-    const tools = params.tools as Array<Record<string, unknown>>;
+    const tools = params.tools as unknown as Array<Record<string, unknown>>;
     expect(tools).toHaveLength(1);
     expect(tools[0]).toEqual({
       type: "tool_search",
@@ -141,7 +141,7 @@ describe("tool search support", () => {
       ],
     });
 
-    const tools = params.tools as Array<Record<string, unknown>>;
+    const tools = params.tools as unknown as Array<Record<string, unknown>>;
     expect(tools).toHaveLength(2);
     expect(tools[1]).toHaveProperty("defer_loading", true);
     expect(tools[1]).toHaveProperty("type", "function");

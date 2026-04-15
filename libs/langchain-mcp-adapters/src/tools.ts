@@ -1,5 +1,4 @@
-import { z, ZodError as ZodErrorV4 } from "zod/v4";
-import { ZodError as ZodErrorV3 } from "zod/v3";
+import { z, ZodError } from "zod";
 import {
   type CallToolResult,
   type ContentBlock as MCPContentBlock,
@@ -498,7 +497,7 @@ export class ToolException extends Error {
     if (
       cause &&
       // oxlint-disable-next-line no-instanceof/no-instanceof
-      (cause instanceof ZodErrorV4 || cause instanceof ZodErrorV3)
+      cause instanceof ZodError
     ) {
       const minifiedZodError = new Error(z.prettifyError(cause));
       const stackByLine = cause.stack?.split("\n") || [];
@@ -1163,7 +1162,7 @@ async function _callTool({
     );
   } catch (error) {
     // oxlint-disable-next-line no-instanceof/no-instanceof
-    if (error instanceof ZodErrorV4 || error instanceof ZodErrorV3) {
+    if (error instanceof ZodError) {
       throw new ToolException(z.prettifyError(error), error);
     }
 

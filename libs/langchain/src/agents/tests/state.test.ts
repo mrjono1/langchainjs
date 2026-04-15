@@ -1,5 +1,4 @@
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 import { describe, it, expect } from "vitest";
 import { HumanMessage, ToolMessage } from "@langchain/core/messages";
 import { tool } from "@langchain/core/tools";
@@ -258,10 +257,10 @@ describe("middleware state management", () => {
 });
 
 describe("state schema reducer preservation", () => {
-  it("should preserve Zod v4 reducer metadata when converting to v3-compatible schema", async () => {
-    const stateSchema = z4.object({
-      tasks: z4
-        .array(z4.string())
+  it("should preserve Zod reducer metadata on state schema", async () => {
+    const stateSchema = z.object({
+      tasks: z
+        .array(z.string())
         .default([])
         .register(registry, {
           reducer: {

@@ -10,7 +10,7 @@
  * configurations used in the langchain-model-profiles package.
  */
 
-import { z } from "zod/v3";
+import * as z from "zod";
 
 export const Model = z
   .object({

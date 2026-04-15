@@ -1,6 +1,6 @@
 import { CallbackManagerForToolRun } from "@langchain/core/callbacks/manager";
 import { StructuredTool, ToolParams } from "@langchain/core/tools";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { InferInteropZodOutput } from "@langchain/core/dist/utils/types/zod.js";
 import {
   TavilyResearchAPIWrapper,
@@ -119,6 +119,7 @@ const outputSchemaPropertySchema: z.ZodTypeAny = z.lazy(() =>
     description: z.string().optional(),
     properties: z
       .record(
+        z.string(),
         // Recursive definition: nested properties use the same schema shape
         outputSchemaPropertySchema
       )
@@ -146,7 +147,7 @@ const inputSchema = z.object({
     ),
   outputSchema: z
     .object({
-      properties: z.record(outputSchemaPropertySchema),
+      properties: z.record(z.string(), outputSchemaPropertySchema),
       required: z.array(z.string()).optional(),
     })
     .optional()

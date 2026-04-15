@@ -11,7 +11,7 @@ import type { OAuthClientProvider } from "@modelcontextprotocol/sdk/client/auth.
 import type { DynamicStructuredTool } from "@langchain/core/tools";
 import type { LoggingLevel } from "@modelcontextprotocol/sdk/types.js";
 
-import { z } from "zod/v3";
+import * as z from "zod";
 import { loadMcpTools } from "./tools.js";
 import { ConnectionManager, type Client } from "./connection.js";
 import { getDebugLog } from "./logging.js";
@@ -181,7 +181,9 @@ export class MultiServerMCPClient {
       parsedServerConfig = configSchema.parse(config);
     } else {
       // two step parse so parse errors are referencing the correct object paths
-      const parsedMcpServers = z.record(connectionSchema).parse(config);
+      const parsedMcpServers = z
+        .record(z.string(), connectionSchema)
+        .parse(config);
 
       parsedServerConfig = configSchema.parse({ mcpServers: parsedMcpServers });
     }

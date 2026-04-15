@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { z as z3 } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 import { StateSchema } from "@langchain/langgraph";
 import { getInteropZodObjectShape } from "@langchain/core/utils/types";
 import { initializeMiddlewareStates, derivePrivateState } from "../utils.js";
@@ -9,23 +8,11 @@ import type { AgentMiddleware } from "../../middleware/types.js";
 const baseState = { messages: [] };
 
 describe("initializeMiddlewareStates", () => {
-  it("should work with a zod v3 stateSchema", async () => {
-    const middleware: AgentMiddleware = {
-      name: "test-middleware",
-      stateSchema: z3.object({
-        counter: z3.number().default(0),
-      }),
-    };
-
-    const result = await initializeMiddlewareStates([middleware], baseState);
-    expect(result).toEqual({ counter: 0 });
-  });
-
   it("should work with a zod v4 stateSchema", async () => {
     const middleware: AgentMiddleware = {
       name: "test-middleware",
-      stateSchema: z4.object({
-        counter: z4.number().default(0),
+      stateSchema: z.object({
+        counter: z.number().default(0),
       }),
     };
 
@@ -42,8 +29,8 @@ describe("initializeMiddlewareStates", () => {
   it("should throw a descriptive error when required fields are missing", async () => {
     const middleware: AgentMiddleware = {
       name: "test-middleware",
-      stateSchema: z3.object({
-        requiredField: z3.string(),
+      stateSchema: z.object({
+        requiredField: z.string(),
       }),
     };
 
@@ -60,22 +47,10 @@ describe("derivePrivateState", () => {
     expect(shape).toHaveProperty("messages");
   });
 
-  it("should include private (underscore) fields from a zod v3 schema", () => {
-    const stateSchema = z3.object({
-      publicField: z3.string().default("pub"),
-      _privateField: z3.string().default("priv"),
-    });
-
-    const schema = derivePrivateState(stateSchema);
-    const shape = getInteropZodObjectShape(schema);
-    expect(shape).toHaveProperty("_privateField");
-    expect(shape).toHaveProperty("messages");
-  });
-
   it("should include private (underscore) fields from a zod v4 schema", () => {
-    const stateSchema = z4.object({
-      publicField: z4.string().default("pub"),
-      _privateField: z4.string().default("priv"),
+    const stateSchema = z.object({
+      publicField: z.string().default("pub"),
+      _privateField: z.string().default("priv"),
     });
 
     const schema = derivePrivateState(stateSchema);
@@ -86,8 +61,8 @@ describe("derivePrivateState", () => {
 
   it("should include private fields from StateSchema", () => {
     const stateSchema = new StateSchema({
-      publicField: z4.string().default("pub"),
-      _privateField: z4.string().default("priv"),
+      publicField: z.string().default("pub"),
+      _privateField: z.string().default("priv"),
     });
 
     const schema = derivePrivateState(stateSchema);

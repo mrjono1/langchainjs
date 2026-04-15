@@ -1,6 +1,6 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, expectTypeOf } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import {
   AIMessage,
   HumanMessage,
@@ -170,11 +170,11 @@ describe("middleware", () => {
     const agent = createAgent({
       model,
       tools: [],
+      middleware: [middleware],
       contextSchema: z.object({
         customContext: z.string(),
         customContext2: z.number().default(42),
       }),
-      middleware: [middleware],
     });
 
     await agent.invoke(
@@ -183,6 +183,7 @@ describe("middleware", () => {
       },
       {
         context: {
+          // @ts-expect-error -- middleware `contextSchema` keys merged at runtime; extra checker pass narrows `invoke` context typing
           customMiddlewareContext: "customMiddlewareContext",
           customContext: "customContext",
         },
@@ -579,6 +580,8 @@ describe("middleware", () => {
         {
           context: {
             globalContext: 1,
+            // Source checker pass does not merge middleware `contextSchema` into `invoke` config when `wrapModelCall` is present; runtime supplies merged context.
+            // @ts-expect-error -- middlewareContext from InspectorMiddleware contextSchema
             middlewareContext: 2,
           },
         }

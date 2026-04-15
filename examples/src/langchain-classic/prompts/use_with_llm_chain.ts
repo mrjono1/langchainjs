@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { ChatOpenAI } from "@langchain/openai";
 import { LLMChain } from "@langchain/classic/chains";
 import { OutputFixingParser } from "@langchain/classic/output_parsers";

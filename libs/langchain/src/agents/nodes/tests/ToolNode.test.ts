@@ -9,7 +9,10 @@ import {
   RemoveMessage,
   ToolMessage,
 } from "@langchain/core/messages";
-import { z } from "zod/v3";
+import type { InteropZodType } from "@langchain/core/utils/types";
+import * as z from "zod";
+import "@langchain/langgraph/zod";
+import { withLangGraph } from "@langchain/langgraph/zod";
 import { RunnableLambda } from "@langchain/core/runnables";
 import { CallbackManager } from "@langchain/core/callbacks/manager";
 import { BaseCallbackHandler } from "@langchain/core/callbacks/base";
@@ -21,10 +24,18 @@ import {
   Send,
   StateGraph,
   MessagesAnnotation,
-  MessagesZodState,
+  MessagesZodMeta,
 } from "@langchain/langgraph";
 
 import { ToolNode } from "../ToolNode.js";
+
+/** Same shape as {@link MessagesZodState}, built with root `zod` so `isInteropZodObject` matches workspace core. */
+const MessagesZodState = z.object({
+  messages: withLangGraph(
+    z.custom<BaseMessage[]>() as InteropZodType<BaseMessage[]>,
+    MessagesZodMeta
+  ),
+});
 
 import {
   _AnyIdAIMessage,
@@ -979,7 +990,9 @@ describe("ToolNode error handling", () => {
 
       // Tool error should be caught and converted to ToolMessage
       const toolMessage = result.messages[2] as ToolMessage;
-      expect(toolMessage.content).toContain("Expected number, received string");
+      expect(toolMessage.content).toContain(
+        "Invalid input: expected number, received string"
+      );
 
       expect(toolMessage.content).toContain(
         `invoking tool 'strict_tool' with kwargs {"value":"123"}`

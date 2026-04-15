@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import z from "zod/v3";
+import * as z from "zod";
 import { AIMessage, HumanMessage } from "@langchain/core/messages";
 import { tool } from "@langchain/core/tools";
 import {

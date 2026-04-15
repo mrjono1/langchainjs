@@ -1,6 +1,6 @@
 import { describe, expect, vi, test } from "vitest";
 import type { HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { toJsonSchema } from "@langchain/core/utils/json_schema";
 import {
   AIMessage,
@@ -164,7 +164,7 @@ test("removeAdditionalProperties can remove all instances of additionalPropertie
       .object({
         serviceName: z.string(),
         endpointName: z.string(),
-        parameters: z.record(z.unknown()),
+        parameters: z.record(z.string(), z.unknown()),
         extractionPath: z.string(),
       })
       .optional(),

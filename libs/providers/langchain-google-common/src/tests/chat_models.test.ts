@@ -14,7 +14,7 @@ import { InMemoryStore } from "@langchain/core/stores";
 import { CallbackHandlerMethods } from "@langchain/core/callbacks/base";
 import { Serialized } from "@langchain/core/load/serializable";
 import { tool } from "@langchain/core/tools";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { toJsonSchema } from "@langchain/core/utils/json_schema";
 import { ChatGoogleBase, ChatGoogleBaseInput } from "../chat_models.js";
 import {
@@ -3322,7 +3322,7 @@ test("removeAdditionalProperties can remove all instances of additionalPropertie
       .object({
         serviceName: z.string(),
         endpointName: z.string(),
-        parameters: z.record(z.unknown()),
+        parameters: z.record(z.string(), z.unknown()),
         extractionPath: z.string(),
       })
       .optional(),

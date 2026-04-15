@@ -1,5 +1,5 @@
 import { test, expect, vi, describe } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import {
   BaseMessage,
   ChatMessage,

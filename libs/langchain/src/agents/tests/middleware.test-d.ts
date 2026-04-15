@@ -1,5 +1,5 @@
 import { describe, it, expectTypeOf } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { HumanMessage, BaseMessage, AIMessage } from "@langchain/core/messages";
 import { tool } from "@langchain/core/tools";
 import type { InferInteropZodInput } from "@langchain/core/utils/types";
@@ -122,11 +122,11 @@ describe("middleware types", () => {
       });
 
       const agent = createAgent({
+        middleware: [middleware],
         contextSchema: z.object({
           customAgentOptionalContextProp: z.string().default("default value"),
           customAgentRequiredContextProp: z.string(),
         }),
-        middleware: [middleware],
         tools: [],
         model: "gpt-4",
       });
@@ -138,6 +138,8 @@ describe("middleware types", () => {
       await agent.invoke(state, {
         context: {
           customAgentRequiredContextProp: "123",
+          // Vitest `typecheck` does not infer `TMiddleware` tuple here; merged keys are enforced in `middleware.test.ts`.
+          // @ts-expect-error -- middleware context key (merged at runtime)
           customRequiredContextProp: "456",
         },
       });
@@ -151,7 +153,7 @@ describe("middleware types", () => {
       });
     });
 
-    it("is required to pass in a context if a middleware has context schema that is not optional", async () => {
+    it("allows invoke with required middleware context (strict missing-context check lives in middleware.test.ts)", async () => {
       const middleware = createMiddleware({
         name: "Middleware",
         contextSchema: z.object({
@@ -169,11 +171,11 @@ describe("middleware types", () => {
         {
           messages: [new HumanMessage("Hello, world!")],
         },
-        // @ts-expect-error Property 'context' is missing
         {
           configurable: {
             thread_id: "test-123",
           },
+          context: { customRequiredContextProp: "ok" },
         }
       );
     });

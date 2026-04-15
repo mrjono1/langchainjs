@@ -1,7 +1,7 @@
 /**
  * Tool retry middleware for agents.
  */
-import { z } from "zod/v3";
+import * as z from "zod";
 import { ToolMessage } from "@langchain/core/messages";
 import type { ClientTool, ServerTool } from "@langchain/core/tools";
 
@@ -50,7 +50,10 @@ export const ToolRetryMiddlewareOptionsSchema = z
          * @deprecated Use `"continue"` instead.
          */
         z.literal("return_message"),
-        z.function().args(z.instanceof(Error)).returns(z.string()),
+        z.function({
+          input: [z.instanceof(Error)],
+          output: z.string(),
+        }),
       ])
       .default("continue"),
   })

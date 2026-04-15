@@ -1,6 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 import { ChatPerplexity } from "../chat_models.js";
 

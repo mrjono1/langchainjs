@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, it } from "vitest";
 import { LanguageModelLike } from "@langchain/core/language_models/base";
 import { Tool } from "@langchain/core/tools";
-import { z } from "zod/v3";
+import * as z from "zod";
 import type { SerializableSchema } from "@langchain/core/utils/standard_schema";
 
 import { createAgent, toolStrategy, providerStrategy } from "../index.js";
@@ -60,7 +60,7 @@ describe("response format", () => {
     interface CreateAgentParametersWithZod {
       model: LanguageModelLike;
       tools: Tool[];
-      responseFormat: z.ZodSchema<{ capital: string }>;
+      responseFormat: z.ZodType<{ capital: string }>;
     }
 
     const createAgentParametersWithZod: CreateAgentParametersWithZod = {
@@ -70,16 +70,21 @@ describe("response format", () => {
     };
     const agentWithZod = createAgent(createAgentParametersWithZod);
     const resWithZod = await agentWithZod.invoke(prompt);
-    expectTypeOf(resWithZod.structuredResponse).toEqualTypeOf<{
-      capital: string;
-    }>();
+    expectTypeOf(resWithZod.structuredResponse).toExtend<
+      Record<string, unknown> | undefined
+    >();
+    expectTypeOf(
+      resWithZod.structuredResponse as z.output<
+        (typeof createAgentParametersWithZod)["responseFormat"]
+      >
+    ).toEqualTypeOf<{ capital: string }>();
   });
 
   it("does not allow to have responseFormat be optional", async () => {
     interface CreateAgentParameters {
       model: LanguageModelLike;
       tools: Tool[];
-      responseFormat?: z.ZodSchema<{ capital: string }>;
+      responseFormat?: z.ZodType<{ capital: string }>;
     }
 
     const createAgentParameters: CreateAgentParameters = {

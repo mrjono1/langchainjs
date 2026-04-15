@@ -6,7 +6,7 @@ import {
 import { ChatOpenAI } from "@langchain/openai";
 import { createSqlQueryChain } from "@langchain/classic/chains/sql_db";
 import { SqlDatabase } from "@langchain/classic/sql_db";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 const db = await SqlDatabase.fromOptionsParams({
   appDataSourceOptions: {

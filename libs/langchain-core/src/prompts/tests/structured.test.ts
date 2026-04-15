@@ -1,5 +1,5 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
-import { ZodType, ZodTypeDef } from "zod/v3";
+import { ZodType, ZodTypeDef } from "zod";
 import { test, expect } from "vitest";
 import {
   StructuredOutputMethodParams,

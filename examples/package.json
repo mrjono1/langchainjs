@@ -20,7 +20,7 @@
   "dependencies": {
     "@aws-sdk/dsql-signer": "^3.1022.0",
     "@azure/identity": "^4.13.1",
-    "@browserbasehq/stagehand": "^3.2.0",
+    "@browserbasehq/stagehand": "^3.2.1",
     "@clickhouse/client": "^1.18.2",
     "@cloudflare/workers-types": "^4.20260402.1",
     "@elastic/elasticsearch": "^9.3.4",
@@ -73,7 +73,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.4.0",
     "duck-duck-scrape": "^2.2.7",
-    "exa-js": "^2.10.2",
+    "exa-js": "^2.11.0",
     "firebase-admin": "^13.7.0",
     "graphql": "^16.13.2",
     "hdb": "^2.27.1",
@@ -95,7 +95,6 @@
     "uuid": "^13.0.0",
     "voy-search": "0.6.3",
     "weaviate-client": "^3.12.0",
-    "zod-to-json-schema": "^3.25.2",
     "@getzep/zep-cloud": "^3.18.0",
     "@getzep/zep-js": "^2.0.2",
     "@tsconfig/recommended": "^1.0.13",
@@ -120,7 +119,7 @@
   "peerDependencies": {
     "@getzep/zep-cloud": "^1.0.6",
     "@getzep/zep-js": "^2.0.2",
-    "zod": "^3.25.76 || ^4"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.13",

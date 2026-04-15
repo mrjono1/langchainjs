@@ -6,7 +6,7 @@ import {
   SystemMessage,
 } from "@langchain/core/messages";
 import { Command, isCommand } from "@langchain/langgraph";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { FakeToolCallingChatModel } from "../../tests/utils.js";
 import { AgentNode } from "../AgentNode.js";
 import { createMiddleware, toolStrategy } from "../../index.js";

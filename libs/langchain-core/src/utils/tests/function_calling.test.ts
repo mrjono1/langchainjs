@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { test, expect } from "vitest";
 import {
   convertToOpenAIFunction,
@@ -56,7 +56,7 @@ test("Can convert tool to OpenAI Functions format", async () => {
       },
       required: ["prop1", "prop2"],
       additionalProperties: false,
-      $schema: "http://json-schema.org/draft-07/schema#",
+      $schema: "https://json-schema.org/draft/2020-12/schema",
     },
   });
 });
@@ -113,7 +113,7 @@ test("Can convert tool to OpenAI Tool format", async () => {
         },
         required: ["prop1", "prop2"],
         additionalProperties: false,
-        $schema: "http://json-schema.org/draft-07/schema#",
+        $schema: "https://json-schema.org/draft/2020-12/schema",
       },
     },
   });

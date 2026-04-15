@@ -1,17 +1,13 @@
 import { toJSONSchema, type $ZodType } from "zod/v4/core";
 import { dereference, type Schema } from "@cfworker/json-schema";
 import {
-  isZodSchemaV3,
   isZodSchemaV4,
   InteropZodType,
   interopZodObjectStrict,
   isZodObjectV4,
   interopZodTransformInputSchema,
 } from "./types/zod.js";
-import {
-  type JsonSchema7Type as JSONSchema,
-  zodToJsonSchema,
-} from "./zod-to-json-schema/index.js";
+import type { JSONSchema } from "./json_schema_7_types.js";
 import { StandardJSONSchemaV1 } from "@standard-schema/spec";
 import { isStandardJsonSchema } from "./standard_schema.js";
 
@@ -73,8 +69,6 @@ export function toJsonSchema(
     } else {
       result = toJSONSchema(schema as unknown as $ZodType, params);
     }
-  } else if (isZodSchemaV3(schema)) {
-    result = zodToJsonSchema(schema as never);
   } else {
     result = schema as JSONSchema;
   }
@@ -173,18 +167,12 @@ export function validatesOnlyStrings(schema: unknown): boolean {
   return false;
 }
 
-// Re-export of the types used throughout langchain for json schema serialization.
-// The plan is to eventually nix zod-to-json-schema altogether in place for
-// zod v4 / a more standardized way of serializing validated inputs, so its re-exported
-// here to remove the dependency on zod-to-json-schema in downstream packages until
-// a determination is made.
-
-export {
-  type JsonSchema7Type,
-  type JsonSchema7Type as JSONSchema,
-  type JsonSchema7ArrayType,
-  type JsonSchema7ObjectType,
-  type JsonSchema7StringType,
-  type JsonSchema7NumberType,
-  type JsonSchema7NullableType,
-} from "./zod-to-json-schema/index.js";
+export type {
+  JSONSchema,
+  JsonSchema7Type,
+  JsonSchema7ArrayType,
+  JsonSchema7ObjectType,
+  JsonSchema7StringType,
+  JsonSchema7NumberType,
+  JsonSchema7NullableType,
+} from "./json_schema_7_types.js";

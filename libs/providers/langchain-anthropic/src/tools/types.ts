@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { z } from "zod/v4";
+import * as z from "zod";
 
 /**
  * Memory tool command types as defined by Anthropic's memory tool API.

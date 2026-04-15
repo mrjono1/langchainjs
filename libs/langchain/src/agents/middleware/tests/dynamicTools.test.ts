@@ -5,7 +5,7 @@
  * that are not declared upfront when creating the agent.
  */
 import { describe, it, expect } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { tool } from "@langchain/core/tools";
 import { HumanMessage, ToolMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";

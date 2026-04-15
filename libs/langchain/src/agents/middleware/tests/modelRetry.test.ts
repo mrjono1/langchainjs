@@ -121,7 +121,7 @@ describe("modelRetryMiddleware", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(InvalidRetryConfigError);
         expect((error as InvalidRetryConfigError).message).toContain(
-          "Number must be greater than or equal to 0"
+          "Too small: expected number to be >=0"
         );
         expect((error as InvalidRetryConfigError).cause.issues[0].path).toEqual(
           ["maxRetries"]
@@ -139,7 +139,7 @@ describe("modelRetryMiddleware", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(InvalidRetryConfigError);
         expect((error as InvalidRetryConfigError).message).toContain(
-          "Number must be greater than or equal to 0"
+          "Too small: expected number to be >=0"
         );
         expect((error as InvalidRetryConfigError).cause.issues[0].path).toEqual(
           ["initialDelayMs"]
@@ -157,7 +157,7 @@ describe("modelRetryMiddleware", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(InvalidRetryConfigError);
         expect((error as InvalidRetryConfigError).message).toContain(
-          "Number must be greater than or equal to 0"
+          "Too small: expected number to be >=0"
         );
         expect((error as InvalidRetryConfigError).cause.issues[0].path).toEqual(
           ["maxDelayMs"]
@@ -175,7 +175,7 @@ describe("modelRetryMiddleware", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(InvalidRetryConfigError);
         expect((error as InvalidRetryConfigError).message).toContain(
-          "Number must be greater than or equal to 0"
+          "Too small: expected number to be >=0"
         );
         expect((error as InvalidRetryConfigError).cause.issues[0].path).toEqual(
           ["backoffFactor"]

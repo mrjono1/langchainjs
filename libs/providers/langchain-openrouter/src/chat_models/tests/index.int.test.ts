@@ -1,6 +1,6 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, expect } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import {
   AIMessageChunk,
   HumanMessage,

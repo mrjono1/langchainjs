@@ -22,11 +22,10 @@
     "libs/langchain/src/load/import_map.ts",
     "libs/langchain/src/load/dynamic_import_map.ts",
     "libs/langchain-core/src/load/import_type.ts",
-    "libs/langchain-core/src/utils/zod-to-json-schema/**",
     "libs/langchain-classic/src/load/import_type.ts",
     "libs/langchain-classic/src/load/import_map.ts",
     "libs/langchain-classic/src/load/dynamic_import_map.ts",
     "libs/community/langchain-community/src/load/import_map.ts",
-    "libs/create-langchain-integration/dist",
-  ],
+    "libs/create-langchain-integration/dist"
+  ]
 }

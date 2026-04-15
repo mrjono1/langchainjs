@@ -6,7 +6,7 @@ import {
   LangSmithParams,
 } from "@langchain/core/language_models/chat_models";
 import { AIMessageChunk, HumanMessage } from "@langchain/core/messages";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { InferInteropZodOutput } from "@langchain/core/utils/types";
 import { StructuredTool } from "@langchain/core/tools";
 import {

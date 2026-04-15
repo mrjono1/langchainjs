@@ -1,5 +1,5 @@
 import type { Anthropic } from "@anthropic-ai/sdk";
-import * as z from "zod/v4";
+import * as z from "zod";
 import { AnthropicToolChoice } from "../types.js";
 
 export function handleToolChoice(

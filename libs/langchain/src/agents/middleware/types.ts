@@ -29,6 +29,9 @@ import type { ModelRequest } from "../nodes/types.js";
 
 type PromiseOrValue<T> = T | Promise<T>;
 
+/** True when `T` is `any` (widened {@link AgentMiddleware} defaults should not contribute invoke context keys). */
+type IsAny<T> = 0 extends 1 & T ? true : false;
+
 export type AnyAnnotationRoot = AnnotationRoot<any>;
 
 /**
@@ -711,9 +714,11 @@ export type InferMergedInputState<T extends readonly AgentMiddleware[]> =
  */
 export type InferMiddlewareContext<T extends AgentMiddleware> =
   T extends AgentMiddleware<any, infer TContextSchema, any, any>
-    ? TContextSchema extends InteropZodObject
-      ? InferInteropZodInput<TContextSchema>
-      : {}
+    ? IsAny<TContextSchema> extends true
+      ? {}
+      : TContextSchema extends InteropZodObject
+        ? InferInteropZodInput<TContextSchema>
+        : {}
     : {};
 
 /**
@@ -721,11 +726,13 @@ export type InferMiddlewareContext<T extends AgentMiddleware> =
  */
 export type InferMiddlewareContextInput<T extends AgentMiddleware> =
   T extends AgentMiddleware<any, infer TContextSchema, any, any>
-    ? TContextSchema extends InteropZodOptional<infer Inner>
-      ? InferInteropZodInput<Inner> | undefined
-      : TContextSchema extends InteropZodObject
-        ? InferInteropZodInput<TContextSchema>
-        : {}
+    ? IsAny<TContextSchema> extends true
+      ? {}
+      : TContextSchema extends InteropZodOptional<infer Inner>
+        ? InferInteropZodInput<Inner> | undefined
+        : TContextSchema extends InteropZodObject
+          ? InferInteropZodInput<TContextSchema>
+          : {}
     : {};
 
 /**

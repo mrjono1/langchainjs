@@ -1,4 +1,4 @@
-import type { ZodV3Like } from "../utils/types/zod.js";
+import type { ZodV4Like } from "../utils/types/zod.js";
 import { CallbackManagerForToolRun } from "../callbacks/manager.js";
 import type {
   BaseLangChainParams,
@@ -200,7 +200,7 @@ export type StructuredToolCallInput<
  * only needs to provide a single text value as input to the tool.
  */
 // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-export type StringInputToolSchema = ZodV3Like<string | undefined, any>;
+export type StringInputToolSchema = ZodV4Like<string | undefined, any>;
 
 /**
  * Defines the type for input to a tool's call method.

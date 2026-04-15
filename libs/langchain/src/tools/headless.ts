@@ -122,7 +122,7 @@ function createHeadlessTool<
         execute,
       }),
     }
-  ) as HeadlessTool<SchemaT, NameT>;
+  ) as unknown as HeadlessTool<SchemaT, NameT>;
 
   return headlessTool;
 }

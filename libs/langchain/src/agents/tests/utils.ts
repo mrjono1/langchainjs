@@ -32,7 +32,7 @@ import {
   type BaseCheckpointSaver,
 } from "@langchain/langgraph-checkpoint";
 import { LanguageModelLike } from "@langchain/core/language_models/base";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 /**
  * Custom asymmetric matcher that matches any string value.

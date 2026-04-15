@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import type { Command } from "@langchain/langgraph";
 import type { EmbeddedResource } from "@modelcontextprotocol/sdk/types.js";
 import type { ContentBlock } from "@langchain/core/messages";
@@ -68,7 +68,7 @@ export type ModifiedToolCallResult = z.output<
 
 const toolCallModificationSchema = z
   .object({
-    headers: z.record(z.string()),
+    headers: z.record(z.string(), z.string()),
     args: z.unknown(),
   })
   .partial();
@@ -102,16 +102,19 @@ export const toolHooksSchema = z.object({
    * ```
    */
   beforeToolCall: z
-    .function()
-    .args(toolCallRequestSchema, z.custom<State>(), z.custom<RunnableConfig>())
-    .returns(
-      z.union([
+    .function({
+      input: [
+        toolCallRequestSchema,
+        z.custom<State>(),
+        z.custom<RunnableConfig>(),
+      ],
+      output: z.union([
         z.promise(toolCallModificationSchema),
         toolCallModificationSchema,
         z.void(),
         z.promise(z.void()),
-      ])
-    )
+      ]),
+    })
     .optional(),
 
   /**
@@ -138,16 +141,19 @@ export const toolHooksSchema = z.object({
    * ```
    */
   afterToolCall: z
-    .function()
-    .args(toolCallResultSchema, z.custom<State>(), z.custom<RunnableConfig>())
-    .returns(
-      z.union([
+    .function({
+      input: [
+        toolCallResultSchema,
+        z.custom<State>(),
+        z.custom<RunnableConfig>(),
+      ],
+      output: z.union([
         z.promise(modifiedToolCallResultSchema.pick({ result: true })),
         modifiedToolCallResultSchema.pick({ result: true }),
         z.void(),
         z.promise(z.void()),
-      ])
-    )
+      ]),
+    })
     .optional(),
 });
 export type ToolHooks = z.input<typeof toolHooksSchema>;

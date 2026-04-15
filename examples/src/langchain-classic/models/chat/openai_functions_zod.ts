@@ -1,5 +1,5 @@
 import { ChatOpenAI } from "@langchain/openai";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { HumanMessage } from "@langchain/core/messages";
 
 const extractionFunctionDefinition = {

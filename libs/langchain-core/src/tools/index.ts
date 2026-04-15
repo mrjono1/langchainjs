@@ -1,5 +1,4 @@
-import { z } from "zod/v3";
-import { z as z4, ZodError } from "zod/v4";
+import { z, ZodError } from "zod";
 import {
   validate,
   type Schema as ValidationSchema,
@@ -246,7 +245,7 @@ export abstract class StructuredTool<
           message = `${message}\nDetails: ${(e as Error).message}`;
         }
         if (isInteropZodError(e)) {
-          message = `${message}\n\n${z4.prettifyError(e as ZodError)}`;
+          message = `${message}\n\n${z.prettifyError(e as ZodError)}`;
         }
         // Pass the original raw input arg to the exception
         throw new ToolInputParsingException(message, JSON.stringify(arg));

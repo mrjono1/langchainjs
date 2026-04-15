@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { StructuredTool, ToolParams } from "@langchain/core/tools";
 import { InferInteropZodOutput } from "@langchain/core/utils/types";
 import { BaseFileStore } from "../stores/file/base.js";

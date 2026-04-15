@@ -5,8 +5,7 @@ import {
   ToolMessage,
   AIMessageChunk,
 } from "@langchain/core/messages";
-import { z } from "zod";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 import { OutputParserException } from "@langchain/core/output_parsers";
 import { tool } from "@langchain/core/tools";
 import {
@@ -719,13 +718,13 @@ describe("Tool extras validation", () => {
   test("defer_loading with wrong type throws error", () => {
     expect(() => {
       AnthropicToolExtrasSchema.parse({ defer_loading: "not a bool" });
-    }).toThrow(z4.ZodError);
+    }).toThrow(z.ZodError);
   });
 
   test("input_examples with wrong type throws error", () => {
     expect(() => {
       AnthropicToolExtrasSchema.parse({ input_examples: "not a list" });
-    }).toThrow(z4.ZodError);
+    }).toThrow(z.ZodError);
   });
 });
 

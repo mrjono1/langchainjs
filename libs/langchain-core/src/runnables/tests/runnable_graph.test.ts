@@ -38,7 +38,7 @@ test("Test graph sequence", async () => {
         type: "schema",
         data: {
           title: "PromptTemplateInput",
-          $schema: "http://json-schema.org/draft-07/schema#",
+          $schema: "https://json-schema.org/draft/2020-12/schema",
         },
       },
       {
@@ -75,7 +75,7 @@ test("Test graph sequence", async () => {
         type: "schema",
         data: {
           title: "CommaSeparatedListOutputParserOutput",
-          $schema: "http://json-schema.org/draft-07/schema#",
+          $schema: "https://json-schema.org/draft/2020-12/schema",
         },
       },
     ],

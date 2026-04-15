@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { Bench, type TaskResultCompleted } from "tinybench";

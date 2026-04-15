@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 
 import { ChatOllama } from "@langchain/ollama";
 import { PromptTemplate } from "@langchain/core/prompts";

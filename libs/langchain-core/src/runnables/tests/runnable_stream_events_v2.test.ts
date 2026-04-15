@@ -1,5 +1,5 @@
 import { test, expect, afterEach } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { AsyncLocalStorage } from "node:async_hooks";
 import {
   RunnableLambda,

@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import type { BaseLanguageModelInterface } from "@langchain/core/language_models/base";
 import {
   Example,

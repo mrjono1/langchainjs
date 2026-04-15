@@ -1,7 +1,6 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, expectTypeOf } from "vitest";
-import { z } from "zod";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 import {
   HumanMessage,
   ToolMessage,
@@ -55,8 +54,8 @@ describe("StateSchema support", () => {
 
     it("should accept StateSchema with Zod v4 schemas", () => {
       const AgentState = new StateSchema({
-        userId: z4.string(),
-        count: z4.number().default(0),
+        userId: z.string(),
+        count: z.number().default(0),
       });
 
       const agent = createAgent({

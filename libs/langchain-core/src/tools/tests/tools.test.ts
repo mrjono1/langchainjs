@@ -1,6 +1,5 @@
 import { test, it, expect, describe } from "vitest";
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 
 import {
   DynamicStructuredTool,
@@ -295,8 +294,8 @@ test("Tool declared with JSON schema", async () => {
 });
 
 test("Tool declared with zod v4 schema", async () => {
-  const weatherSchema = z4.object({
-    location: z4.string(),
+  const weatherSchema = z.object({
+    location: z.string(),
   });
 
   const weatherTool = tool(
@@ -407,15 +406,17 @@ test("Tool can throw detailed errors", async () => {
   ).rejects.toThrow(`Received tool input did not match expected schema
 Details: [
   {
-    "code": "invalid_type",
     "expected": "string",
-    "received": "number",
+    "code": "invalid_type",
     "path": [
       "location"
     ],
-    "message": "Expected string, received number"
+    "message": "Invalid input: expected string, received number"
   }
-]`);
+]
+
+✖ Invalid input: expected string, received number
+  → at location`);
 });
 
 describe("isStructuredToolParams", () => {
@@ -429,7 +430,7 @@ describe("isStructuredToolParams", () => {
   test("returns true for a tool with a zod v4 schema", () => {
     const zodToolParams: StructuredToolParams = {
       name: "test",
-      schema: z4.string(),
+      schema: z.string(),
     };
     expect(isStructuredToolParams(zodToolParams)).toBe(true);
   });

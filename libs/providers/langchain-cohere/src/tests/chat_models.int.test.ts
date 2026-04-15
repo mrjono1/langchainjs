@@ -4,7 +4,7 @@ import {
   HumanMessage,
   ToolMessage,
 } from "@langchain/core/messages";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { DynamicStructuredTool } from "@langchain/core/tools";
 import { ChatCohere } from "../chat_models.js";
 

@@ -1,5 +1,4 @@
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 import { v4 as uuid } from "uuid";
 import {
   BaseMessage,
@@ -66,10 +65,10 @@ const DEFAULT_TRIM_TOKEN_LIMIT = 4000;
 const DEFAULT_FALLBACK_MESSAGE_COUNT = 15;
 const SEARCH_RANGE_FOR_TOOL_PAIRS = 5;
 
-const tokenCounterSchema = z
-  .function()
-  .args(z.array(z.custom<BaseMessage>()))
-  .returns(z.union([z.number(), z.promise(z.number())]));
+const tokenCounterSchema = z.function({
+  input: [z.array(z.custom<BaseMessage>())],
+  output: z.union([z.number(), z.promise(z.number())]),
+});
 export type TokenCounter = (
   messages: BaseMessage[]
 ) => number | Promise<number>;
@@ -285,7 +284,7 @@ export function summarizationMiddleware(
   const { data: userOptions, error } = interopSafeParse(contextSchema, options);
   if (error) {
     throw new Error(
-      `Invalid summarization middleware options: ${z4.prettifyError(error)}`
+      `Invalid summarization middleware options: ${z.prettifyError(error)}`
     );
   }
 

@@ -1,12 +1,7 @@
 import { OpenAI as OpenAIClient } from "openai";
-import {
-  InteropZodType,
-  isZodSchemaV3,
-  isZodSchemaV4,
-} from "@langchain/core/utils/types";
+import { InteropZodType, isZodSchemaV4 } from "@langchain/core/utils/types";
 import { parse as parseV4, type $ZodType } from "zod/v4/core";
 import { ResponseFormatJSONSchema } from "openai/resources";
-import { zodResponseFormat } from "openai/helpers/zod";
 import { ContentBlock, UsageMetadata } from "@langchain/core/messages";
 import { toJsonSchema } from "@langchain/core/utils/json_schema";
 
@@ -94,9 +89,6 @@ export function interopZodResponseFormat(
   name: string,
   props: Omit<ResponseFormatJSONSchema.JSONSchema, "schema" | "strict" | "name">
 ) {
-  if (isZodSchemaV3(zodSchema)) {
-    return zodResponseFormat(zodSchema as never, name, props);
-  }
   if (isZodSchemaV4(zodSchema)) {
     return makeParseableResponseFormat(
       {

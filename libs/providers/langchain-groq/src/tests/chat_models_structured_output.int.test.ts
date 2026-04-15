@@ -1,5 +1,5 @@
 import { test, expect, describe } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { toJsonSchema } from "@langchain/core/utils/json_schema";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { AIMessage } from "@langchain/core/messages";

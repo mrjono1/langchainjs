@@ -1,5 +1,5 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
-import * as z4 from "zod/v4";
+import * as z from "zod";
 import { describe, test, expect, vi } from "vitest";
 import {
   AIMessageChunk,
@@ -1227,18 +1227,18 @@ describe("structured output works with different schema types", () => {
       name: "zod v4 - directly nested schema",
       prompt: "What is the home address of the user?",
       getSchema() {
-        return z4.object({
-          homeAddress: z4.object({
-            street: z4.string().transform((s) => s.toUpperCase()),
-            city: z4.string(),
+        return z.object({
+          homeAddress: z.object({
+            street: z.string().transform((s) => s.toUpperCase()),
+            city: z.string(),
           }),
-          workAddress: z4.object({
-            street: z4.string().transform((s) => s.toUpperCase()),
-            city: z4.string(),
+          workAddress: z.object({
+            street: z.string().transform((s) => s.toUpperCase()),
+            city: z.string(),
           }),
-          billingAddress: z4.object({
-            street: z4.string().transform((s) => s.toUpperCase()),
-            city: z4.string(),
+          billingAddress: z.object({
+            street: z.string().transform((s) => s.toUpperCase()),
+            city: z.string(),
           }),
         });
       },
@@ -1247,11 +1247,11 @@ describe("structured output works with different schema types", () => {
       name: "zod v4 - indirectly nested schema",
       prompt: "What is the home address of the user?",
       getSchema() {
-        const addressSchema = z4.object({
-          street: z4.string().transform((s) => s.toUpperCase()),
-          city: z4.string(),
+        const addressSchema = z.object({
+          street: z.string().transform((s) => s.toUpperCase()),
+          city: z.string(),
         });
-        return z4.object({
+        return z.object({
           homeAddress: addressSchema,
           workAddress: addressSchema,
           billingAddress: addressSchema,

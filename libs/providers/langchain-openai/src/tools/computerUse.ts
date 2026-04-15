@@ -1,5 +1,5 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
-import { z } from "zod/v4";
+import * as z from "zod";
 import { OpenAI as OpenAIClient } from "openai";
 import { tool, type DynamicStructuredTool } from "@langchain/core/tools";
 import { type ToolRuntime } from "@langchain/core/tools";

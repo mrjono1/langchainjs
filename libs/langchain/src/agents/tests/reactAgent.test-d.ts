@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { BaseMessage, HumanMessage } from "@langchain/core/messages";
 import {
   BaseLanguageModelInput,

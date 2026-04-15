@@ -1,7 +1,7 @@
 /**
  * Model retry middleware for agents.
  */
-import { z } from "zod/v3";
+import * as z from "zod";
 import { AIMessage } from "@langchain/core/messages";
 
 import { createMiddleware } from "../middleware.js";
@@ -26,7 +26,10 @@ export const ModelRetryMiddlewareOptionsSchema = z
       .union([
         z.literal("error"),
         z.literal("continue"),
-        z.function().args(z.instanceof(Error)).returns(z.string()),
+        z.function({
+          input: [z.instanceof(Error)],
+          output: z.string(),
+        }),
       ])
       .default("continue"),
   })

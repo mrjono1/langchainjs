@@ -1,4 +1,3 @@
-import type { ZodV3Like, ZodV4Like } from "../../utils/types/zod.js";
 import { ChatGeneration, ChatGenerationChunk } from "../../outputs.js";
 import { OutputParserException } from "../base.js";
 import { parsePartialJson } from "../json.js";
@@ -206,16 +205,6 @@ type JsonOutputKeyToolsParserParamsBase = {
   returnSingle?: boolean;
 } & JsonOutputToolsParserParams;
 
-type JsonOutputKeyToolsParserParamsV3<
-  // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends Record<string, any> = Record<string, any>,
-> = { zodSchema?: ZodV3Like<T> } & JsonOutputKeyToolsParserParamsBase;
-
-type JsonOutputKeyToolsParserParamsV4<
-  // oxlint-disable-next-line @typescript-eslint/no-explicit-any
-  T extends Record<string, any> = Record<string, any>,
-> = { zodSchema?: ZodV4Like<T, T> } & JsonOutputKeyToolsParserParamsBase;
-
 export type JsonOutputKeyToolsParserParamsInterop<
   // oxlint-disable-next-line @typescript-eslint/no-explicit-any
   T extends Record<string, any> = Record<string, any>,
@@ -228,11 +217,10 @@ export type JsonOutputKeyToolsParserParamsSerializable<
   serializableSchema?: SerializableSchema<T>;
 } & JsonOutputKeyToolsParserParamsBase;
 
-// Use Zod 3 for backwards compatibility
 export type JsonOutputKeyToolsParserParams<
   // oxlint-disable-next-line @typescript-eslint/no-explicit-any
   T extends Record<string, any> = Record<string, any>,
-> = JsonOutputKeyToolsParserParamsV3<T>;
+> = JsonOutputKeyToolsParserParamsInterop<T>;
 
 /**
  * Class for parsing the output of a tool-calling LLM into a JSON object if you are
@@ -262,16 +250,10 @@ export class JsonOutputKeyToolsParser<
 
   serializableSchema?: SerializableSchema<T>;
 
-  constructor(params: JsonOutputKeyToolsParserParamsV3<T>);
-
-  constructor(params: JsonOutputKeyToolsParserParamsV4<T>);
-
   constructor(params: JsonOutputKeyToolsParserParamsInterop<T>);
 
   constructor(
     params:
-      | JsonOutputKeyToolsParserParamsV3<T>
-      | JsonOutputKeyToolsParserParamsV4<T>
       | JsonOutputKeyToolsParserParamsInterop<T>
       | JsonOutputKeyToolsParserParamsSerializable<T>
   ) {

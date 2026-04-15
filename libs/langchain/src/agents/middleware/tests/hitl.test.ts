@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { tool } from "@langchain/core/tools";
 import {

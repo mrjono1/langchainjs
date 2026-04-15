@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 import {
   createContentParser,
   createFunctionCallingParser,
@@ -35,7 +34,7 @@ describe("createContentParser", () => {
   });
 
   it("returns StructuredOutputParser for a Zod v4 schema", () => {
-    const schema = z4.object({ name: z4.string() });
+    const schema = z.object({ name: z.string() });
     const parser = createContentParser(schema);
     expect(parser).toBeInstanceOf(StructuredOutputParser);
   });
@@ -68,7 +67,7 @@ describe("createFunctionCallingParser", () => {
   });
 
   it("returns JsonOutputKeyToolsParser with zodSchema for a Zod v4 schema", () => {
-    const schema = z4.object({ name: z4.string() });
+    const schema = z.object({ name: z.string() });
     const parser = createFunctionCallingParser(schema, "extract");
     expect(parser).toBeInstanceOf(JsonOutputKeyToolsParser);
     expect(

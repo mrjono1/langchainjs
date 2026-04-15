@@ -1,5 +1,5 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
-import { z } from "zod/v3";
+import * as z from "zod";
 import { AIMessage, ToolMessage, ToolCall } from "@langchain/core/messages";
 import {
   InferInteropZodInput,
@@ -11,14 +11,14 @@ import { createMiddleware } from "../middleware.js";
 import type { AgentBuiltInState, Runtime } from "../runtime.js";
 import type { JumpToTarget } from "../constants.js";
 
-const DescriptionFunctionSchema = z
-  .function()
-  .args(
+const DescriptionFunctionSchema = z.function({
+  input: [
     z.custom<ToolCall>(), // toolCall
     z.custom<AgentBuiltInState>(), // state
-    z.custom<Runtime<unknown>>() // runtime
-  )
-  .returns(z.union([z.string(), z.promise(z.string())]));
+    z.custom<Runtime<unknown>>(), // runtime
+  ],
+  output: z.union([z.string(), z.promise(z.string())]),
+});
 
 /**
  * Function type that dynamically generates a description for a tool call approval request.
@@ -98,7 +98,7 @@ const InterruptOnConfigSchema = z.object({
   /**
    * JSON schema for the arguments associated with the action, if edits are allowed.
    */
-  argsSchema: z.record(z.any()).optional(),
+  argsSchema: z.record(z.string(), z.any()).optional(),
 });
 export type InterruptOnConfig = z.input<typeof InterruptOnConfigSchema>;
 
@@ -238,7 +238,7 @@ const contextSchema = z.object({
    * - `InterruptOnConfig` -> explicitly specify which decisions are allowed for this tool
    */
   interruptOn: z
-    .record(z.union([z.boolean(), InterruptOnConfigSchema]))
+    .record(z.string(), z.union([z.boolean(), InterruptOnConfigSchema]))
     .optional(),
   /**
    * Prefix used when constructing human-facing approval messages.

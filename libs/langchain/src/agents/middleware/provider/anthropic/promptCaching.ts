@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { InferInteropZodInput } from "@langchain/core/utils/types";
 
 import { ConfigurableModel } from "../../../../chat_models/universal.js";

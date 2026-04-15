@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 import {
   DynamicStructuredTool,
   DynamicTool,
@@ -533,15 +532,15 @@ describe("tool factory function type tests", () => {
           {
             name: "greet_tool",
             description: "Greets a person",
-            schema: z4.object({
-              name: z4.string(),
-              age: z4.number(),
+            schema: z.object({
+              name: z.string(),
+              age: z.number(),
             }),
           }
         );
 
         const structuredTool: DynamicStructuredTool<
-          z4.ZodObject<{ name: z4.ZodString; age: z4.ZodNumber }>,
+          z.ZodObject<{ name: z.ZodString; age: z.ZodNumber }>,
           { name: string; age: number },
           { name: string; age: number },
           string

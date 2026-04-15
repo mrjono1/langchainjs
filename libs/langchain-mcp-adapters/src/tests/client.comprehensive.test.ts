@@ -1,5 +1,5 @@
 import { vi, describe, test, expect, beforeEach, type Mock } from "vitest";
-import { ZodError } from "zod/v3";
+import { ZodError } from "zod";
 
 // Import modules after mocking
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";

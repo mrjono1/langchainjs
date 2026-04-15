@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { AIMessage } from "@langchain/core/messages";
 import { InferInteropZodInput } from "@langchain/core/utils/types";
 

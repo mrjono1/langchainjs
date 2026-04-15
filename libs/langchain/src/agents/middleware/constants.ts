@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 
 export const RetrySchema = z.object({
   /**
@@ -14,7 +14,10 @@ export const RetrySchema = z.object({
    */
   retryOn: z
     .union([
-      z.function().args(z.instanceof(Error)).returns(z.boolean()),
+      z.function({
+        input: [z.instanceof(Error)],
+        output: z.boolean(),
+      }),
       // oxlint-disable-next-line @typescript-eslint/no-explicit-any
       z.array(z.custom<new (...args: any[]) => Error>()),
     ])

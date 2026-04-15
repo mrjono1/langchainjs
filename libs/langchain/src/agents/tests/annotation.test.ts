@@ -1,6 +1,6 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { z as z4 } from "zod";
 import { StateSchema, ReducedValue } from "@langchain/langgraph";
 

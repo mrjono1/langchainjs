@@ -1,6 +1,6 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
 import { it, test, expect, describe, beforeAll, afterAll, vi } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { toJsonSchema } from "@langchain/core/utils/json_schema";
 import { load } from "@langchain/core/load";
 import { tool } from "@langchain/core/tools";
@@ -605,13 +605,21 @@ describe("ChatOpenAI", () => {
 
     // @ts-expect-error - defaultOptions is protected
     const tools = modelWithTools.defaultOptions.tools;
+    expect(tools).toBeDefined();
     expect(tools).toHaveLength(2);
-    expect(tools[0]).toHaveProperty("defer_loading", true);
-    expect(tools[0]).toHaveProperty("type", "function");
-    expect(tools[0].function.name).toBe("deferred_tool");
-    expect(tools[1]).not.toHaveProperty("defer_loading");
-    expect(tools[1]).toHaveProperty("type", "function");
-    expect(tools[1].function.name).toBe("normal_tool");
+    type OpenAIFunctionTool = {
+      type: "function";
+      function: { name: string };
+      defer_loading?: boolean;
+    };
+    const t0 = tools![0] as OpenAIFunctionTool;
+    const t1 = tools![1] as OpenAIFunctionTool;
+    expect(t0).toHaveProperty("defer_loading", true);
+    expect(t0).toHaveProperty("type", "function");
+    expect(t0.function.name).toBe("deferred_tool");
+    expect(t1).not.toHaveProperty("defer_loading");
+    expect(t1).toHaveProperty("type", "function");
+    expect(t1.function.name).toBe("normal_tool");
   });
 
   test("bindTools passes through tool_search as built-in tool", async () => {
@@ -625,8 +633,9 @@ describe("ChatOpenAI", () => {
 
     // @ts-expect-error - defaultOptions is protected
     const tools = modelWithTools.defaultOptions.tools;
+    expect(tools).toBeDefined();
     expect(tools).toHaveLength(1);
-    expect(tools[0]).toEqual({ type: "tool_search" });
+    expect(tools![0]).toEqual({ type: "tool_search" });
   });
 
   // https://github.com/langchain-ai/langchainjs/issues/8586

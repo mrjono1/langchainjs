@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import type { OAuthClientProvider } from "@modelcontextprotocol/sdk/client/auth.js";
 import type {
   ContentBlock,
@@ -266,7 +266,7 @@ export const stdioConnectionSchema = z
      * Environment variables to set when spawning the process.
      */
     env: z
-      .record(z.string())
+      .record(z.string(), z.string())
       .describe("The environment to use when spawning the process")
       .optional(),
     /**
@@ -361,7 +361,7 @@ export const streamableHttpConnectionSchema = z
     /**
      * Additional headers to send with the request, useful for authentication
      */
-    headers: z.record(z.string()).optional(),
+    headers: z.record(z.string(), z.string()).optional(),
     /**
      * OAuth client provider for automatic authentication handling.
      * When provided, the transport will automatically handle token refresh,
@@ -435,25 +435,26 @@ export const notifications = z.object({
    * ```
    */
   onMessage: z
-    .function()
-    .args(
-      z.object({
-        /**
-         * The severity of this log message.
-         */
-        level: LoggingLevelSchema,
-        /**
-         * An optional name of the logger issuing this message.
-         */
-        logger: z.optional(z.string()),
-        /**
-         * The data to be logged, such as a string message or an object. Any JSON serializable type is allowed here.
-         */
-        data: z.unknown(),
-      }),
-      serverMessageSourceSchema
-    )
-    .returns(z.union([z.void(), z.promise(z.void())]))
+    .function({
+      input: [
+        z.object({
+          /**
+           * The severity of this log message.
+           */
+          level: LoggingLevelSchema,
+          /**
+           * An optional name of the logger issuing this message.
+           */
+          logger: z.optional(z.string()),
+          /**
+           * The data to be logged, such as a string message or an object. Any JSON serializable type is allowed here.
+           */
+          data: z.unknown(),
+        }),
+        serverMessageSourceSchema,
+      ],
+      output: z.union([z.void(), z.promise(z.void())]),
+    })
     .optional(),
   /**
    * Called when a progress message is received.
@@ -481,45 +482,47 @@ export const notifications = z.object({
    * ```
    */
   onProgress: z
-    .function()
-    .args(
-      z.object({
-        /**
-         * The progress thus far. This should increase every time progress is made, even if the total is unknown.
-         */
-        progress: z.number(),
-        /**
-         * Total number of items to process (or total progress required), if known.
-         */
-        total: z.optional(z.number()),
-        /**
-         * An optional message describing the current progress.
-         */
-        message: z.optional(z.string()),
-      }),
-      eventContextSchema
-    )
-    .returns(z.union([z.void(), z.promise(z.void())]))
+    .function({
+      input: [
+        z.object({
+          /**
+           * The progress thus far. This should increase every time progress is made, even if the total is unknown.
+           */
+          progress: z.number(),
+          /**
+           * Total number of items to process (or total progress required), if known.
+           */
+          total: z.optional(z.number()),
+          /**
+           * An optional message describing the current progress.
+           */
+          message: z.optional(z.string()),
+        }),
+        eventContextSchema,
+      ],
+      output: z.union([z.void(), z.promise(z.void())]),
+    })
     .optional(),
   onCancelled: z
-    .function()
-    .args(
-      z.object({
-        /**
-         * The ID of the request to cancel.
-         *
-         * This MUST correspond to the ID of a request previously issued in the same direction.
-         */
-        requestId: RequestIdSchema,
+    .function({
+      input: [
+        z.object({
+          /**
+           * The ID of the request to cancel.
+           *
+           * This MUST correspond to the ID of a request previously issued in the same direction.
+           */
+          requestId: RequestIdSchema,
 
-        /**
-         * An optional string describing the reason for the cancellation. This MAY be logged or presented to the user.
-         */
-        reason: z.string().optional(),
-      }),
-      serverMessageSourceSchema
-    )
-    .returns(z.union([z.void(), z.promise(z.void())]))
+          /**
+           * An optional string describing the reason for the cancellation. This MAY be logged or presented to the user.
+           */
+          reason: z.string().optional(),
+        }),
+        serverMessageSourceSchema,
+      ],
+      output: z.union([z.void(), z.promise(z.void())]),
+    })
     .optional(),
   /**
    * Called when the server is initialized.
@@ -540,9 +543,10 @@ export const notifications = z.object({
    * ```
    */
   onInitialized: z
-    .function()
-    .args(serverMessageSourceSchema)
-    .returns(z.union([z.void(), z.promise(z.void())]))
+    .function({
+      input: [serverMessageSourceSchema],
+      output: z.union([z.void(), z.promise(z.void())]),
+    })
     .optional(),
   /**
    * Called when the prompts list is changed.
@@ -563,9 +567,10 @@ export const notifications = z.object({
    * ```
    */
   onPromptsListChanged: z
-    .function()
-    .args(serverMessageSourceSchema)
-    .returns(z.union([z.void(), z.promise(z.void())]))
+    .function({
+      input: [serverMessageSourceSchema],
+      output: z.union([z.void(), z.promise(z.void())]),
+    })
     .optional(),
   /**
    * Called when the resources list is changed.
@@ -586,9 +591,10 @@ export const notifications = z.object({
    * ```
    */
   onResourcesListChanged: z
-    .function()
-    .args(serverMessageSourceSchema)
-    .returns(z.union([z.void(), z.promise(z.void())]))
+    .function({
+      input: [serverMessageSourceSchema],
+      output: z.union([z.void(), z.promise(z.void())]),
+    })
     .optional(),
   /**
    * Called when the resources are updated.
@@ -611,17 +617,18 @@ export const notifications = z.object({
    * ```
    */
   onResourcesUpdated: z
-    .function()
-    .args(
-      z.object({
-        /**
-         * The URI of the resource that has been updated. This might be a sub-resource of the one that the client actually subscribed to.
-         */
-        uri: z.string(),
-      }),
-      serverMessageSourceSchema
-    )
-    .returns(z.union([z.void(), z.promise(z.void())]))
+    .function({
+      input: [
+        z.object({
+          /**
+           * The URI of the resource that has been updated. This might be a sub-resource of the one that the client actually subscribed to.
+           */
+          uri: z.string(),
+        }),
+        serverMessageSourceSchema,
+      ],
+      output: z.union([z.void(), z.promise(z.void())]),
+    })
     .optional(),
   /**
    * Called when the roots list is changed.
@@ -642,9 +649,10 @@ export const notifications = z.object({
    * ```
    */
   onRootsListChanged: z
-    .function()
-    .args(serverMessageSourceSchema)
-    .returns(z.union([z.void(), z.promise(z.void())]))
+    .function({
+      input: [serverMessageSourceSchema],
+      output: z.union([z.void(), z.promise(z.void())]),
+    })
     .optional(),
   /**
    * Called when the tools list is changed.
@@ -665,9 +673,10 @@ export const notifications = z.object({
    * ```
    */
   onToolsListChanged: z
-    .function()
-    .args(serverMessageSourceSchema)
-    .returns(z.union([z.void(), z.promise(z.void())]))
+    .function({
+      input: [serverMessageSourceSchema],
+      output: z.union([z.void(), z.promise(z.void())]),
+    })
     .optional(),
 });
 export type Notifications = z.output<typeof notifications>;
@@ -681,7 +690,7 @@ export const clientConfigSchema = z
      * A map of server names to their configuration
      */
     mcpServers: z
-      .record(connectionSchema)
+      .record(z.string(), connectionSchema)
       .describe("A map of server names to their configuration"),
     /**
      * Whether to throw an error if a tool fails to load
@@ -747,15 +756,15 @@ export const clientConfigSchema = z
     onConnectionError: z
       .union([
         z.enum(["throw", "ignore"]),
-        z
-          .function()
-          .args(
+        z.function({
+          input: [
             z.object({
               serverName: z.string(),
               error: z.unknown(),
-            })
-          )
-          .returns(z.void()),
+            }),
+          ],
+          output: z.void(),
+        }),
       ])
       .describe(
         "Behavior when a server fails to connect: 'throw' to error immediately, 'ignore' to skip failed servers, or a function for custom error handling"

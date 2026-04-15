@@ -1,7 +1,6 @@
 import { test, expect } from "vitest";
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
-import { zodToJsonSchema } from "../../utils/zod-to-json-schema/index.js";
+import * as z from "zod";
+import { toJsonSchema } from "../../utils/json_schema.js";
 import { FakeChatModel, FakeListChatModel } from "../../utils/testing/index.js";
 import { HumanMessage } from "../../messages/human.js";
 import { getBufferString } from "../../messages/utils.js";
@@ -200,7 +199,7 @@ test("Test ChatModel withStructuredOutput new syntax and JSON schema", async () 
   const model = new FakeListChatModel({
     responses: [`{ "test": true, "nested": { "somethingelse": "somevalue" } }`],
   }).withStructuredOutput(
-    zodToJsonSchema(
+    toJsonSchema(
       z.object({
         test: z.boolean(),
         nested: z.object({
@@ -230,24 +229,6 @@ test("Test ChatModel withStructuredOutput new syntax and includeRaw", async () =
   );
   const response = await model.invoke("Hello there!");
   expect(response).toBeDefined();
-});
-
-test("Test ChatModel withStructuredOutput new syntax using zod v4", async () => {
-  const model = new FakeListChatModel({
-    responses: [`{ "test": true, "nested": { "somethingelse": "somevalue" } }`],
-  }).withStructuredOutput(
-    z4.object({
-      test: z4.boolean(),
-      nested: z4.object({
-        somethingelse: z4.string(),
-      }),
-    })
-  );
-  const response = await model.invoke("Hello there!");
-  expect(response).toEqual({
-    test: true,
-    nested: { somethingelse: "somevalue" },
-  });
 });
 
 test("Test ChatModel can cache complex messages", async () => {

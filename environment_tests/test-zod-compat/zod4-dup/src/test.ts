@@ -1,10 +1,11 @@
 /**
- * Zod v3 compatibility test
+ * Duplicate zod@4 copies — OOM regression test.
  *
- * Simulates a consumer app using zod@3.25.x with @langchain/core and langchain.
- * tsc --noEmit must complete without OOM or type errors.
+ * Consumer uses one zod@4 patch; run.sh installs a different zod@4 patch under
+ * @langchain/core/node_modules. Exported types must stay as structural shapes
+ * without nominal zod imports so tsc does not deep-compare two .d.ts trees.
  */
-import { z } from "zod/v3";
+import * as z from "zod";
 import { tool } from "@langchain/core/tools";
 import { StructuredOutputParser } from "@langchain/core/output_parsers";
 import {
@@ -198,4 +199,4 @@ const fullAgent = createAgent({
 const _ts = toolStrategy(AnalysisResult);
 const _ps = providerStrategy(AnalysisResult);
 
-console.log("zod-v3 type check passed");
+console.log("zod-mismatch type check passed (no OOM!)");

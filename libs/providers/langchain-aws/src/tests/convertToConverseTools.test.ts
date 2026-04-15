@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { convertToConverseTools } from "../utils/tools.js";
 import { tool } from "@langchain/core/tools";
-import { z } from "zod/v3";
+import * as z from "zod";
 
 describe("convertToConverseTools", () => {
   it("should handle mixed tool types (LangChain + OpenAI format)", () => {

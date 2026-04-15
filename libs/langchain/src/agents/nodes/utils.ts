@@ -1,5 +1,5 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
-import { z } from "zod/v4";
+import * as z from "zod";
 import { type BaseMessage } from "@langchain/core/messages";
 import {
   getInteropZodObjectShape,

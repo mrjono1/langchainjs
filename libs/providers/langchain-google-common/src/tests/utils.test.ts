@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test } from "vitest";
 import { InMemoryStore } from "@langchain/core/stores";
 import { SerializedConstructor } from "@langchain/core/load/serializable";
 import { load } from "@langchain/core/load";
-import { z } from "zod/v3";
+import * as z from "zod";
 import {
   AIMessage,
   AIMessageChunk,

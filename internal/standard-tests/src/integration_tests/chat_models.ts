@@ -13,7 +13,7 @@ import {
   UsageMetadata,
   getBufferString,
 } from "@langchain/core/messages";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { toJsonSchema } from "@langchain/core/utils/json_schema";
 import {
   StructuredTool,
@@ -1692,7 +1692,7 @@ export abstract class ChatModelIntegrationTests<
       apiDetails: z.object({
         serviceName: z.string(),
         endpointName: z.string(),
-        parameters: z.record(z.unknown()), // This field represents an object with any structure
+        parameters: z.record(z.string(), z.unknown()), // arbitrary key–value object
         extractionPath: z.string(),
       }),
     });

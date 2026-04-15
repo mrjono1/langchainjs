@@ -1,16 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 import { toJsonSchema } from "../json_schema.js";
 
 describe("toJsonSchema", () => {
   describe("with zod v4 schemas", () => {
     // https://github.com/langchain-ai/langchainjs/issues/8367
     it("should allow transformed v4 zod schemas", () => {
-      const schema = z4
+      const schema = z
         .object({
-          name: z4.string(),
-          age: z4.number(),
+          name: z.string(),
+          age: z.number(),
         })
         .transform((data) => ({
           ...data,
@@ -32,14 +31,14 @@ describe("toJsonSchema", () => {
       });
     });
     it("should allow v4 zod schemas with inner transforms", () => {
-      const userSchema = z4.object({
-        name: z4.string().transform((name) => Math.random() * name.length),
-        age: z4.number(),
+      const userSchema = z.object({
+        name: z.string().transform((name) => Math.random() * name.length),
+        age: z.number(),
       });
-      const schema = z4
+      const schema = z
         .object({
-          users: z4.array(userSchema).transform((users) => users.length),
-          count: z4.number().transform((count) => String(count * 2)),
+          users: z.array(userSchema).transform((users) => users.length),
+          count: z.number().transform((count) => String(count * 2)),
         })
         .transform((data) => JSON.stringify(data));
       const jsonSchema = toJsonSchema(schema);
@@ -130,7 +129,7 @@ describe("toJsonSchema", () => {
     });
 
     it("should return the same reference for repeated calls with a zod v4 schema", () => {
-      const schema = z4.object({ name: z4.string(), age: z4.number() });
+      const schema = z.object({ name: z.string(), age: z.number() });
       const result1 = toJsonSchema(schema);
       const result2 = toJsonSchema(schema);
       expect(result1).toBe(result2);
@@ -146,7 +145,7 @@ describe("toJsonSchema", () => {
     });
 
     it("should bypass cache when params are provided", () => {
-      const schema = z4.object({ x: z4.number() });
+      const schema = z.object({ x: z.number() });
       const resultDefault = toJsonSchema(schema);
       const resultWithParams = toJsonSchema(schema, {
         target: "draft-2020-12",
@@ -237,10 +236,10 @@ describe("toJsonSchema", () => {
     });
 
     it("should not allocate new objects on cache hit (v4)", () => {
-      const schema = z4.object({
-        a: z4.string(),
-        b: z4.number(),
-        c: z4.boolean(),
+      const schema = z.object({
+        a: z.string(),
+        b: z.number(),
+        c: z.boolean(),
       });
 
       const first = toJsonSchema(schema);

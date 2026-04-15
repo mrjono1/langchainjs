@@ -1,4 +1,4 @@
-import { z } from "zod/v3";
+import * as z from "zod";
 import { v7 as uuidv7 } from "uuid";
 
 import {

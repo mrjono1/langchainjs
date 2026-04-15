@@ -1,5 +1,4 @@
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 
 import { describe, expect, test } from "vitest";
 
@@ -29,7 +28,7 @@ test("StructuredOutputParser.fromNamesAndDescriptions", async () => {
 
   Here is the JSON Schema instance your output must adhere to. Include the enclosing markdown codeblock:
   \`\`\`json
-  {"type":"object","properties":{"url":{"type":"string","description":"A link to the resource"}},"required":["url"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"}
+  {"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","properties":{"url":{"type":"string","description":"A link to the resource"}},"required":["url"],"additionalProperties":false}
   \`\`\`
   "
   `);
@@ -49,34 +48,9 @@ describe("StructuredOutputParser.fromZodSchema", () => {
       url: "value",
     });
   };
-  test("zod v3", async () => {
+  test("resolves url field from zod object schema", async () => {
     const parser = StructuredOutputParser.fromZodSchema(
       z.object({ url: z.string().describe("A link to the resource") })
-    );
-
-    await assertValid(parser);
-
-    expect(parser.getFormatInstructions()).toMatchInlineSnapshot(`
-    "You must format your output as a JSON value that adheres to a given "JSON Schema" instance.
-
-    "JSON Schema" is a declarative language that allows you to annotate and validate JSON documents.
-
-    For example, the example "JSON Schema" instance {{"properties": {{"foo": {{"description": "a list of test words", "type": "array", "items": {{"type": "string"}}}}}}, "required": ["foo"]}}
-    would match an object with one required property, "foo". The "type" property specifies "foo" must be an "array", and the "description" property semantically describes it as "a list of test words". The items within "foo" must be strings.
-    Thus, the object {{"foo": ["bar", "baz"]}} is a well-formatted instance of this example "JSON Schema". The object {{"properties": {{"foo": ["bar", "baz"]}}}} is not well-formatted.
-
-    Your output will be parsed and type-checked according to the provided schema instance, so make sure all fields in your output match the schema exactly and there are no trailing commas!
-
-    Here is the JSON Schema instance your output must adhere to. Include the enclosing markdown codeblock:
-    \`\`\`json
-    {"type":"object","properties":{"url":{"type":"string","description":"A link to the resource"}},"required":["url"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"}
-    \`\`\`
-    "
-    `);
-  });
-  test("zod v4", async () => {
-    const parser = StructuredOutputParser.fromZodSchema(
-      z4.object({ url: z4.string().describe("A link to the resource") })
     );
 
     await assertValid(parser);
@@ -110,15 +84,9 @@ describe("StructuredOutputParser.fromZodSchema", () => {
     );
   };
 
-  test("zod v3", async () => {
+  test("rejects parse when value violates enum constraint", async () => {
     await assertThrows(
       z.object({ answer: z.enum(["yes", "no"]).describe("yes or no") })
-    );
-  });
-
-  test("zod v4", async () => {
-    await assertThrows(
-      z4.object({ answer: z4.enum(["yes", "no"]).describe("yes or no") })
     );
   });
 });
@@ -155,42 +123,12 @@ describe("StructuredOutputParser.fromZodSchema", () => {
     });
   };
 
-  test("zod v3", async () => {
+  test("answer and sources with markdown code fences", async () => {
     const parser = StructuredOutputParser.fromZodSchema(
       z.object({
         answer: z.string().describe("answer to the user's question"),
         sources: z
           .array(z.string())
-          .describe("sources used to answer the question, should be websites."),
-      })
-    );
-
-    await assertValid(parser);
-
-    expect(parser.getFormatInstructions()).toMatchInlineSnapshot(`
-    "You must format your output as a JSON value that adheres to a given "JSON Schema" instance.
-
-    "JSON Schema" is a declarative language that allows you to annotate and validate JSON documents.
-
-    For example, the example "JSON Schema" instance {{"properties": {{"foo": {{"description": "a list of test words", "type": "array", "items": {{"type": "string"}}}}}}, "required": ["foo"]}}
-    would match an object with one required property, "foo". The "type" property specifies "foo" must be an "array", and the "description" property semantically describes it as "a list of test words". The items within "foo" must be strings.
-    Thus, the object {{"foo": ["bar", "baz"]}} is a well-formatted instance of this example "JSON Schema". The object {{"properties": {{"foo": ["bar", "baz"]}}}} is not well-formatted.
-
-    Your output will be parsed and type-checked according to the provided schema instance, so make sure all fields in your output match the schema exactly and there are no trailing commas!
-
-    Here is the JSON Schema instance your output must adhere to. Include the enclosing markdown codeblock:
-    \`\`\`json
-    {"type":"object","properties":{"answer":{"type":"string","description":"answer to the user's question"},"sources":{"type":"array","items":{"type":"string"},"description":"sources used to answer the question, should be websites."}},"required":["answer","sources"],"additionalProperties":false,"$schema":"http://json-schema.org/draft-07/schema#"}
-    \`\`\`
-    "
-    `);
-  });
-  test("zod v4", async () => {
-    const parser = StructuredOutputParser.fromZodSchema(
-      z4.object({
-        answer: z4.string().describe("answer to the user's question"),
-        sources: z4
-          .array(z4.string())
           .describe("sources used to answer the question, should be websites."),
       })
     );
@@ -218,7 +156,7 @@ describe("StructuredOutputParser.fromZodSchema", () => {
 });
 
 describe("StructuredOutputParser.fromZodSchema", () => {
-  test("zod v3", async () => {
+  test("complex nested object with optional dates and native enum", async () => {
     const parser = StructuredOutputParser.fromZodSchema(
       z
         .object({
@@ -227,10 +165,9 @@ describe("StructuredOutputParser.fromZodSchema", () => {
           year: z.number().describe("The year the resource was created"),
           createdAt: z
             .string()
-            .datetime()
             .describe("The date and time the resource was created"),
-          createdAtDate: z.coerce
-            .date()
+          createdAtDate: z
+            .string()
             .describe("The date the resource was created")
             .optional(),
           authors: z.array(
@@ -243,71 +180,6 @@ describe("StructuredOutputParser.fromZodSchema", () => {
                 .optional()
                 .describe("The address of the author"),
               stateProvince: z
-                .nativeEnum(StateProvinceEnum)
-                .optional()
-                .describe("The state or province of the author"),
-            })
-          ),
-        })
-        .describe("Only One object")
-    );
-
-    expect(
-      await parser.parse(
-        '```\n{"url": "value", "title": "value", "year": 2011, "createdAt": "2023-03-29T16:07:09.600Z", "createdAtDate": "2023-03-29", "authors": [{"name": "value", "email": "value", "stateProvince": "AZ"}]}```'
-      )
-    ).toEqual({
-      url: "value",
-      title: "value",
-      year: 2011,
-      createdAt: "2023-03-29T16:07:09.600Z",
-      createdAtDate: new Date("2023-03-29T00:00:00.000Z"),
-      authors: [{ name: "value", email: "value", stateProvince: "AZ" }],
-    });
-
-    expect(parser.getFormatInstructions()).toMatchInlineSnapshot(`
-    "You must format your output as a JSON value that adheres to a given "JSON Schema" instance.
-
-    "JSON Schema" is a declarative language that allows you to annotate and validate JSON documents.
-
-    For example, the example "JSON Schema" instance {{"properties": {{"foo": {{"description": "a list of test words", "type": "array", "items": {{"type": "string"}}}}}}, "required": ["foo"]}}
-    would match an object with one required property, "foo". The "type" property specifies "foo" must be an "array", and the "description" property semantically describes it as "a list of test words". The items within "foo" must be strings.
-    Thus, the object {{"foo": ["bar", "baz"]}} is a well-formatted instance of this example "JSON Schema". The object {{"properties": {{"foo": ["bar", "baz"]}}}} is not well-formatted.
-
-    Your output will be parsed and type-checked according to the provided schema instance, so make sure all fields in your output match the schema exactly and there are no trailing commas!
-
-    Here is the JSON Schema instance your output must adhere to. Include the enclosing markdown codeblock:
-    \`\`\`json
-    {"type":"object","properties":{"url":{"type":"string","description":"A link to the resource"},"title":{"type":"string","description":"A title for the resource"},"year":{"type":"number","description":"The year the resource was created"},"createdAt":{"type":"string","format":"date-time","description":"The date and time the resource was created"},"createdAtDate":{"type":"string","format":"date-time","description":"The date the resource was created"},"authors":{"type":"array","items":{"type":"object","properties":{"name":{"type":"string","description":"The name of the author"},"email":{"type":"string","description":"The email of the author"},"type":{"type":"string","enum":["author","editor"]},"address":{"type":"string","description":"The address of the author"},"stateProvince":{"type":"string","enum":["AL","AK","AZ"],"description":"The state or province of the author"}},"required":["name","email"],"additionalProperties":false}}},"required":["url","title","year","createdAt","authors"],"additionalProperties":false,"description":"Only One object","$schema":"http://json-schema.org/draft-07/schema#"}
-    \`\`\`
-    "
-    `);
-  });
-
-  test("zod v4", async () => {
-    const parser = StructuredOutputParser.fromZodSchema(
-      z4
-        .object({
-          url: z4.string().describe("A link to the resource"),
-          title: z4.string().describe("A title for the resource"),
-          year: z4.number().describe("The year the resource was created"),
-          createdAt: z4
-            .string()
-            .describe("The date and time the resource was created"),
-          createdAtDate: z4
-            .string()
-            .describe("The date the resource was created")
-            .optional(),
-          authors: z4.array(
-            z4.object({
-              name: z4.string().describe("The name of the author"),
-              email: z4.string().describe("The email of the author"),
-              type: z4.enum(["author", "editor"]).optional(),
-              address: z4
-                .string()
-                .optional()
-                .describe("The address of the author"),
-              stateProvince: z4
                 .nativeEnum(StateProvinceEnum)
                 .optional()
                 .describe("The state or province of the author"),
@@ -364,7 +236,7 @@ describe("StructuredOutputParser.fromZodSchema parsing newlines", () => {
     });
   };
 
-  test("zod v3", async () => {
+  test("preserves newlines inside string fields", async () => {
     await assertValid(
       z.object({
         url: z.string().describe("A link to the resource"),
@@ -372,65 +244,46 @@ describe("StructuredOutputParser.fromZodSchema parsing newlines", () => {
       })
     );
   });
-  test("zod v4", async () => {
-    await assertValid(
-      z4.object({
-        url: z4.string().describe("A link to the resource"),
-        summary: z4.string().describe("A summary"),
-      })
-    );
-  });
 });
 
 // https://github.com/langchain-ai/langchainjs/issues/8339
 describe("StructuredOutputParser.fromZodSchema parsing json with backticks", () => {
-  const zod3Schema = z.object({
+  const markdownBioSchema = z.object({
     name: z.string().describe("Name"),
     biograph: z.string().describe("Biograph in markdown"),
-  });
-
-  const zod4Schema = z4.object({
-    name: z4.string().describe("Name"),
-    biograph: z4.string().describe("Biograph in markdown"),
   });
 
   describe("without backticks", () => {
     const output =
       '{"name": "John Doe", "biograph": "john doe is a cool dude"}';
-    const testCase = (schema: InteropZodType) => async () => {
-      const parser = StructuredOutputParser.fromZodSchema(schema);
+    test("parses raw json object", async () => {
+      const parser = StructuredOutputParser.fromZodSchema(markdownBioSchema);
       const result = await parser.parse(output);
       expect(result).toHaveProperty("name", "John Doe");
       expect(result).toHaveProperty("biograph", "john doe is a cool dude");
-    };
-    test("zod v3", testCase(zod3Schema));
-    test("zod v4", testCase(zod4Schema));
+    });
   });
   describe("with outer backticks", () => {
     const output =
       '```json\n{"name": "John Doe", "biograph": "john doe is a cool dude"}```';
-    const testCase = (schema: InteropZodType) => async () => {
-      const parser = StructuredOutputParser.fromZodSchema(schema);
+    test("strips fenced json block", async () => {
+      const parser = StructuredOutputParser.fromZodSchema(markdownBioSchema);
       const result = await parser.parse(output);
       expect(result).toHaveProperty("name", "John Doe");
       expect(result).toHaveProperty("biograph", "john doe is a cool dude");
-    };
-    test("zod v3", testCase(zod3Schema));
-    test("zod v4", testCase(zod4Schema));
+    });
   });
   describe("with inner backticks", () => {
     const output =
       '{"name": "John Doe", "biograph": "john doe is a ```cool dude```"}';
-    const testCase = (schema: InteropZodType) => async () => {
-      const parser = StructuredOutputParser.fromZodSchema(schema);
+    test("preserves backticks inside string values", async () => {
+      const parser = StructuredOutputParser.fromZodSchema(markdownBioSchema);
       const result = await parser.parse(output);
       expect(result).toHaveProperty("name", "John Doe");
       expect(result).toHaveProperty(
         "biograph",
         "john doe is a ```cool dude```"
       );
-    };
-    test("zod v3", testCase(zod3Schema));
-    test("zod v4", testCase(zod4Schema));
+    });
   });
 });

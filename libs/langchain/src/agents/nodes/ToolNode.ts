@@ -142,7 +142,7 @@ function defaultHandleToolErrors(
  * @example
  * ```ts
  * import { ToolNode, tool, AIMessage } from "langchain";
- * import { z } from "zod/v3";
+ * import * as z from "zod";
  *
  * const getWeather = tool((input) => {
  *   if (["sf", "san francisco"].includes(input.location.toLowerCase())) {

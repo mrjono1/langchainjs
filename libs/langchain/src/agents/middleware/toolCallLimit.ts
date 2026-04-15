@@ -1,6 +1,5 @@
 import { AIMessage, ToolMessage } from "@langchain/core/messages";
-import { z as z4 } from "zod/v4";
-import { z } from "zod/v3";
+import * as z from "zod";
 import type { InferInteropZodInput } from "@langchain/core/utils/types";
 import type { ToolCall } from "@langchain/core/messages/tool";
 
@@ -263,7 +262,7 @@ export function toolCallLimitMiddleware(options: ToolCallLimitConfig) {
   const exitBehavior = options.exitBehavior ?? DEFAULT_EXIT_BEHAVIOR;
   const parseResult = exitBehaviorSchema.safeParse(exitBehavior);
   if (!parseResult.success) {
-    throw new Error(z4.prettifyError(parseResult.error).slice(2));
+    throw new Error(z.prettifyError(parseResult.error).slice(2));
   }
 
   /**

@@ -1,5 +1,11 @@
 # langchain
 
+## Unreleased
+
+### Breaking Changes
+
+- **Zod v4 only**: peer `zod` is `^4.3.6` (via `@langchain/core`). Use `import { z } from "zod/v4"` and `toJsonSchema` from `@langchain/core/utils/json_schema`.
+
 ## 1.3.2
 
 ### Patch Changes

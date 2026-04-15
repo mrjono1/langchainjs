@@ -2,7 +2,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { tool } from "@langchain/core/tools";
 import { HumanMessage } from "@langchain/core/messages";
-import z from "zod/v3";
+import * as z from "zod";
 
 import { createAgent } from "../index.js";
 import type { JsonSchemaFormat } from "../responses.js";

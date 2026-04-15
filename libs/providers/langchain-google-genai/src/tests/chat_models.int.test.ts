@@ -15,7 +15,7 @@ import {
   MessagesPlaceholder,
 } from "@langchain/core/prompts";
 import { StructuredTool, tool } from "@langchain/core/tools";
-import { z } from "zod/v3";
+import * as z from "zod";
 import {
   CodeExecutionTool,
   DynamicRetrievalMode,

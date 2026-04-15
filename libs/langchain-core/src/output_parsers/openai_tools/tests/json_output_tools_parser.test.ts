@@ -1,7 +1,6 @@
 /* oxlint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, expect } from "vitest";
-import { z } from "zod/v3";
-import { z as z4 } from "zod/v4";
+import * as z from "zod";
 import { JsonOutputKeyToolsParser } from "../json_output_tools_parsers.js";
 import { OutputParserException } from "../../base.js";
 import { AIMessage, AIMessageChunk } from "../../../messages/ai.js";
@@ -67,7 +66,7 @@ describe("JSONOutputKeyToolsParser with a passed schema throws", () => {
     await assertThrows(z.object({ testKey: z.string() }));
   });
   test("zod v4", async () => {
-    await assertThrows(z4.object({ testKey: z4.string() }));
+    await assertThrows(z.object({ testKey: z.string() }));
   });
 });
 
@@ -101,7 +100,7 @@ describe("JSONOutputKeyToolsParser can validate a proper input", () => {
     await assertValid(z.object({ testKey: z.string() }));
   });
   test("zod v4", async () => {
-    await assertValid(z4.object({ testKey: z4.string() }));
+    await assertValid(z.object({ testKey: z.string() }));
   });
 });
 

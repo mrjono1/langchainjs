@@ -5,7 +5,7 @@
  * are not wrapped in MiddlewareError but bubble up unchanged.
  */
 import { describe, it, expect, vi } from "vitest";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { tool } from "@langchain/core/tools";
 import { HumanMessage } from "@langchain/core/messages";
 import { GraphInterrupt, MemorySaver } from "@langchain/langgraph";

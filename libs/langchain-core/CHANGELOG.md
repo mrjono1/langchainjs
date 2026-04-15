@@ -1,5 +1,11 @@
 # @langchain/core
 
+## Unreleased
+
+### Breaking Changes
+
+- **Zod v4 only**: peer dependency `zod` is now `^4.3.6`. Zod v3 and classic `zod/v3` schema instances are not supported in public APIs. Removed the in-tree `zod-to-json-schema` fork; use `toJsonSchema` from `@langchain/core/utils/json_schema` and `import { z } from "zod/v4"`.
+
 ## 1.1.39
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { HumanMessage } from "@langchain/core/messages";
-import { z } from "zod/v3";
+import * as z from "zod";
 import { ChatOpenAI } from "@langchain/openai";
 import { tool } from "@langchain/core/tools";
 import { ChatAnthropic } from "@langchain/anthropic";
